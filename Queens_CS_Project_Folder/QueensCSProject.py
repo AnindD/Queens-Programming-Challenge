@@ -48,8 +48,8 @@ class Number_Point():
         self.x = x 
         self.y = y 
         self.color = (255,0,0)
-        self.height = 15 
-        self.width = 15
+        self.height = 30 
+        self.width = 30
         self.draw_boolean = True
     def draw_point(self):
         if self.draw_boolean == True: 
@@ -63,14 +63,25 @@ class Number_Point():
 # Images 
 PROJECT_ROOT = Path(__file__).parent.parent
 number_game_background = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Number_Game_Background.png")
+number_game_background_2 = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Number_Game_Background_2.png")
 brain = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Brain.png")
 
+
 # Fonts 
-font = pygame.font.SysFont(None, 80)
+number_game_font = pygame.font.Font(PROJECT_ROOT / "Queens_CS_Project_Folder/kremlin.ttf", 400)
+font = pygame.font.Font(PROJECT_ROOT / "Queens_CS_Project_Folder/ContrailOne-Regular.ttf", 60)
+nav_font = pygame.font.SysFont(None, 40)
 
 # Buttons 
 start_button = Button((0,0,0), 100, 100, 500, 200, 2)
 quit_button = Button((0,0,0), 100, 400, 500, 200, 2)
+home_button = Button((255, 0, 0), 100, 25, 100, 50, 2)
+about_us_button = Button((255, 0, 0), 300, 25, 140, 50, 2)
+news_button = Button((255, 0, 0), 540, 25, 100, 50, 2)
+services_button = Button((255, 0, 0), 740, 25, 130, 50, 2)
+contact_us_button = Button((255, 0, 0), 970, 25, 180, 50, 2)
+exit_button = Button((255, 0, 0), 1250, 25, 100, 50, 2)
+nav_bar_buttons = [home_button, about_us_button, news_button, services_button, contact_us_button]
 
 # All the screens as booleans, if one variable is true it will show that particular screen. It will automatically st art off with the start menu as true. 
 start_game = True
@@ -80,32 +91,70 @@ game = False
 text = "a"
 counter = 0 
 
+
+# Thresholds 
+changing_number_threshold = 1
+threshold_counter = 0 
+
+
 # List of all the points that will be clicked on. 
 number_point_list = [
-    Number_Point(199, 100), 
-    Number_Point(395, 102), Number_Point(436,156), 
-    Number_Point(622, 100), Number_Point(624, 129), Number_Point(624, 155),
-    Number_Point(838, 101), Number_Point(838, 139), Number_Point(878, 101), Number_Point(878, 139), Number_Point(878, 170)]
+    Number_Point(60, 133), 
+    Number_Point(283, 132), Number_Point(368,242), 
+    Number_Point(566, 131), Number_Point(608, 184), Number_Point(566, 240),
+    Number_Point(845, 131), Number_Point(845, 213), Number_Point(927, 131), Number_Point(927, 213),
+    Number_Point(1208, 132), Number_Point(1125,132), Number_Point(1124, 184), Number_Point(1206, 185), Number_Point(1124,240),
+    Number_Point(303, 497), Number_Point(303,497), Number_Point(227, 552), Number_Point(227, 552), Number_Point(309, 604), Number_Point(309,604), 
+    Number_Point(467, 499), Number_Point(552, 498), Number_Point(552, 498), Number_Point(552, 566), Number_Point(552, 566), Number_Point(552, 613), Number_Point(552, 613),
+    Number_Point(750, 528),  Number_Point(750, 528), Number_Point(831, 528), Number_Point(831, 528), Number_Point(750, 609), Number_Point(750, 609), Number_Point(832,608),  Number_Point(832,608),
+    Number_Point(1029, 497), Number_Point(1029, 497), Number_Point(1109, 497), Number_Point(1109, 497), Number_Point(1029, 551), Number_Point(1029, 551), Number_Point(1109, 551), Number_Point(1109, 551), Number_Point(1030,606)
+    ]
+constant_len_list = len(number_point_list)
+
+number_list = [1,2,3,4,5,6,7,8,9,10]
 
 # Draw all the necessary components for the start menu. 
 def draw_start():
     win.fill((255,255,255))
     start_font = font.render("START", True, (0,0,0))
-    quit_font = font.render("QUIT", True, (0,0,0)) 
+    quit_font = font.render("QUIT", True, (0,0,0))
+    home_font = nav_font.render("Home", True, (0, 255, 0))
+    about_us_font = nav_font.render("About Us", True, (0, 255, 0))
+    news_font = nav_font.render("News", True, (0, 255, 0))
+    services_font = nav_font.render("Services", True, (0, 255, 0))
+    contact_us_font = nav_font.render("Contact Us", True, (0, 255, 0))
     start_button.draw_button()
     quit_button.draw_button()
+    for buttons in nav_bar_buttons: 
+        buttons.draw_button() 
     win.blit(brain, (769,50))
-    win.blit(start_font, (250,170))
+    win.blit(start_font, (250,170)) 
     win.blit(quit_font, (250, 470))
+    win.blit(home_font, (110, 30))
+    win.blit(about_us_font, (310, 30))
+    win.blit(news_font, (550, 30))
+    win.blit(services_font, (750, 30))
+    win.blit(contact_us_font, (980, 30))
 
 # Draw all necessary components for the mathematics game. 
 def draw_math_game(): 
-    win.blit(number_game_background, (0,0))
+    win.blit(number_game_background_2, (0,0))
+    pygame.draw.rect(win, (0,0,0), (1505,0, 295, 900))
+    #clickable_text = number_game_font.render(str(changing_number_threshold), True, (255,0,0))
+    #win.blit(clickable_text, clickable_text.get_rect(center = win.get_rect().center))
+
     instructions_font = font.render("Click on the red square !", True, (255,0,0))
-    if len(number_point_list) == 11:
-        win.blit(instructions_font, (255,255))
-    
-    number_point_list[0].draw_point()
+    counter_font = font.render(f"Numbers clicked: {changing_number_threshold-1}/9, keep going!", True, (0,0,0))
+    congrats_font = font.render("Congratulations, you've clicked on all numbers !", True, (0,0,0))
+
+    if len(number_point_list) == constant_len_list:
+        win.blit(instructions_font, (46,801))
+    if len(number_point_list) > 0:
+        win.blit(counter_font, (255,355))
+    elif len(number_point_list) == 0: 
+        win.blit(congrats_font, (255,355))
+    if len(number_point_list) > 0: 
+        number_point_list[0].draw_point()
 
 while run: 
     pygame.time.delay(50)
@@ -123,6 +172,11 @@ while run:
             # Deletes points. 
             for number_points in number_point_list:
                 if number_points.check_mouse_position(mouse_position) and game == True: 
+                    # Threshold counter will increase by 1 always when clicked 
+                    threshold_counter += 1 
+                    if threshold_counter == changing_number_threshold: 
+                        changing_number_threshold += 1 
+                        threshold_counter = 0 
                     number_point_list.pop(number_point_list.index(number_points))
                     number_points.color == (255,0,0)
                     counter += 1 
@@ -140,15 +194,11 @@ while run:
     if start_game == True:  
         draw_start()
     if game == True:
+        #print(threshold_counter)
+        #print(changing_number_threshold)
         draw_math_game()
         #for number_points in number_point_list:
             #number_points.draw_point()  
 
-        """print(text)
-        instructions = font.render("Type anything on your keyboard.", True, (255,0,0))
-        text_font = font.render(text, True, (0,0,0))
-        win.fill((255,255,255))
-        win.blit(instructions, (250, 170))
-        win.blit(text_font, (250, 470)) """
     pygame.display.update()
 pygame.quit()
