@@ -1,15 +1,11 @@
 # Authors: Edwin Chen, Anindit Dewan, Jaelyn Wan 
 # Date: July, 26thm, 2022
 # Version: N/A 
-
-
-
 import pygame 
 import cv2 
 import numpy 
 import math 
 from pathlib import Path
-
 
 # initialize the necessary variables 
 pygame.init()
@@ -87,10 +83,12 @@ number_game_background_2 = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_F
 logo = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Propel_logo.jpg")
 counter_starter_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Counter_Starter_Button.png")
 
+
 Square_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Square.png")
 Triangle_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Triangle.png")
 Cube_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Cube.png")
 Octagon_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Octagon.png")
+Shape_Collage = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Shape_Selection_Collage.png")
 
 
 
@@ -116,9 +114,10 @@ shape_game_button = Button((0,0,255), 900, 450, 900, 450, 0)
 
 game_one_okay_button = Button((255,0,0), 546, 538, 163, 62, 0)
 game_one_restart_button = Button((255,255,255), 1505, 800, 300, 62, 0)
-shape_game_okay_button = Button((255,0,0), 837, 815, 163, 62, 0)
+shape_game_okay_button = Button((255,255,255), 837, 815, 163, 62, 0)
 
-finish_shape_drawing_button = Button((255,0,0), 450, 450, 100, 100, 0)
+finish_shape_drawing_button = Button((0,0,0), 55, 121, 125, 100, 0)
+restart_shape_game_button = Button((0,0,0), 55,750, 150, 100, 0)
 
 # Shape Game Buttons 
 square = Button((255,0,0), 0, 0, 211, 225, 1)
@@ -147,8 +146,9 @@ shape_boolean_list = [square_boolean, triangle_boolean, cube_boolean, octagon_bo
 intermediate_shape_game_screen = False 
 calculations_screen = False 
 
-
-shape_mouse_counter = 8
+calculator_list = []
+total_accuracy_percentage = 0 
+shape_mouse_counter = 0
 
 # Extra Details 
 text = "a"
@@ -165,7 +165,7 @@ first_timer_boolean = False
 timer_event = pygame.USEREVENT+1
 pygame.time.set_timer(timer_event, 1000)
 
-intermediate_shape_time = 2
+intermediate_shape_time = 5
 shape_timer_boolean = False 
 
 # Arcs which will be used for the timer. 
@@ -206,6 +206,15 @@ constant_len_list = len(number_point_list)
 number_list = [1,2,3,4,5,6,7,8,9,10]
 
 shape_game_number_list = []
+def draw_shapes():
+    if octagon_boolean == True: 
+        win.blit(Octagon_Image, (678,131))
+    if triangle_boolean == True: 
+        win.blit(Triangle_Image, (702, 197))
+    if cube_boolean == True: 
+        win.blit(Cube_Image, (612, 81))
+    if square_boolean == True: 
+        win.blit(Square_Image, (696, 141)) 
 
 # Draw all the necessary components for the start menu. 
 def draw_start():
@@ -239,8 +248,9 @@ def draw_intermediate():
 def draw_intermediate_shape(): 
     if intermediate_shape_game_screen == True: 
         win.fill((230,230,230))
-        intermediate_shape_timer = font.render(str(intermediate_shape_time), True, (255,0,0) )
-        win.blit(intermediate_shape_timer, (450, 450))
+        intermediate_shape_timer = font.render(str(intermediate_shape_time), True, (0,0,0) )
+        draw_shapes() 
+        win.blit(intermediate_shape_timer, (20, 450))
 
 delete_list = False
 
@@ -248,18 +258,69 @@ def draw_shape_game():
     win.fill((230,230,230))
     pygame.draw.rect(win, (0,0,0), (211, 0, 19, 900), 0)
     pygame.draw.rect(win, (255,255,255), (0,0, 211, 900), 0)
+
+    cube_font = shape_game_font.render("Cube", True, (0,0,0))
+    square_font = shape_game_font.render("Square", True, (0,0,0))
+    triangle_font = shape_game_font.render("Triangle", True, (0,0,0))
+    octagon_font = shape_game_font.render("Octagon", True, (0,0,0))
+    shape_okay_button_font = font.render("Start", True, (0,0,0))
+
+    win.blit(square_font, (72, 166))
+    win.blit(triangle_font, (64, 397))
+    win.blit(octagon_font, (75, 635))
+    win.blit(cube_font, (56, 860)) 
+    win.blit(Shape_Collage, (0,0))
+
     for shape_button in shape_buttons: 
         shape_button.draw_button()
-    if octagon_boolean == True: 
-        win.blit(Octagon_Image, (678,131))
-    if triangle_boolean == True: 
-        win.blit(Triangle_Image, (702, 197))
-    if cube_boolean == True: 
-        win.blit(Cube_Image, (612, 81))
-    if square_boolean == True: 
-        win.blit(Square_Image, (696, 141))
-    shape_game_okay_button.draw_button()
 
+    draw_shapes()
+
+    shape_game_okay_button.draw_button()
+    win.blit(shape_okay_button_font, (871, 815))
+
+def calculate_shape_points(): 
+    calculator_list = []
+    # Modify each number point object into a list 
+    for item in shape_game_number_list: 
+        item_2 = (item.x, item.y)
+        calculator_list.append(item_2)
+    if square_boolean == True: 
+        dist_1 = math.sqrt((689-calculator_list[0][0])**2 + (139-calculator_list[0][1])**2)
+        dist_2 = math.sqrt((697-calculator_list[1][0])**2 + (683-calculator_list[1][1])**2)
+        dist_3 = math.sqrt((1240-calculator_list[2][0])**2 + (142-calculator_list[2][1])**2)
+        dist_4 = math.sqrt((1240-calculator_list[3][0])**2 + (688-calculator_list[3][1])**2) 
+        calculator_list = [dist_1, dist_2, dist_3, dist_4]
+    if triangle_boolean == True: 
+        dist_1 = math.sqrt((952-calculator_list[0][0])**2 + (202-calculator_list[0][1])**2)
+        dist_2 = math.sqrt((707-calculator_list[1][0])**2 + (645-calculator_list[1][1])**2)
+        dist_3 = math.sqrt((1197-calculator_list[2][0])**2 + (647-calculator_list[2][1])**2)
+        calculator_list = [dist_1, dist_2, dist_3]
+    if octagon_boolean == True: 
+        dist_1 = math.sqrt((855-calculator_list[0][0])**2 + (152-calculator_list[0][1])**2)
+        dist_2 = math.sqrt((1095-calculator_list[1][0])**2 + (151-calculator_list[1][1])**2)
+        dist_3 = math.sqrt((1244-calculator_list[2][0])**2 + (314-calculator_list[2][1])**2)
+        dist_4 = math.sqrt((1237-calculator_list[3][0])**2 + (546-calculator_list[3][1])**2)
+        dist_5 = math.sqrt((1087-calculator_list[4][0])**2 + (716-calculator_list[4][1])**2)
+        dist_6 = math.sqrt((857-calculator_list[5][0])**2 + (719-calculator_list[5][1])**2)
+        dist_7 = math.sqrt((692-calculator_list[6][0])**2 + (555-calculator_list[6][1])**2)
+        dist_8 = math.sqrt((695-calculator_list[7][0])**2 + (321-calculator_list[7][1])**2)
+        calculator_list = [dist_1, dist_2, dist_3, dist_4, dist_5, dist_6, dist_7, dist_8]
+    if cube_boolean == True: 
+        dist_1 = math.sqrt((876-calculator_list[0][0])**2 + (161-calculator_list[0][1])**2)
+        dist_2 = math.sqrt((1268-calculator_list[1][0])**2 + (156-calculator_list[1][1])**2)
+        dist_3 = math.sqrt((719-calculator_list[2][0])**2 + (719-calculator_list[2][1])**2)
+        dist_4 = math.sqrt((1129-calculator_list[3][0])**2 + (1129-calculator_list[3][1])**2)
+        dist_5 = math.sqrt((883-calculator_list[4][0])**2 + (883-calculator_list[4][1])**2)
+        dist_6 = math.sqrt((1262-calculator_list[5][0])**2 + (1262-calculator_list[5][1])**2)
+        dist_7 = math.sqrt((732-calculator_list[6][0])**2 + (732-calculator_list[6][1])**2)
+        dist_8 = math.sqrt((1138-calculator_list[7][0])**2 + (1138-calculator_list[7][1])**2)
+        calculator_list = [dist_1, dist_2, dist_3, dist_4, dist_5, dist_6, dist_7, dist_8]
+    for distances in range(0,len(calculator_list)): 
+        if abs(calculator_list[distances]) > 200: 
+            calculator_list[distances] = 0 
+        else:
+            calculator_list[distances] = int(100-((calculator_list[distances]/200)*100))  
 # Draw all necessary components for the mathematics game. 
 def draw_math_game(): 
     win.blit(number_game_background_2, (0,0))
@@ -410,6 +471,7 @@ while run:
                     print("NO SHAPE SELECTED")
                 else: 
                     shape_game = False 
+                    fade()
                     intermediate_shape_game_screen = True
                     shape_timer_boolean = True 
             if shape_game_itself == True and finish_shape_drawing_button.check_mouse_position(mouse_position) == False:
@@ -419,14 +481,28 @@ while run:
                     shape_game_number_list.pop()
                 if triangle_boolean == True and len(shape_game_number_list) > 3: 
                     shape_game_number_list.pop()
-                if cube_boolean or octagon_boolean == True and len(shape_game_number_list) > 8: 
+                if (cube_boolean == True or octagon_boolean == True) and len(shape_game_number_list) > 8: 
                     shape_game_number_list.pop()
             if shape_game_itself == True and finish_shape_drawing_button.check_mouse_position(mouse_position):
-                print("GONE")
-                print(shape_game_number_list)
-                shape_game_itself = False 
-                calculations_screen = True 
-        #print(mouse_position)  # Prints mouse position in console, useful for trying to place objects. 
+                if (square_boolean == True and len(shape_game_number_list) < 4) or (triangle_boolean == True and len(shape_game_number_list) < 3) or ((octagon_boolean == True or cube_boolean == True) and len(shape_game_number_list) < 8):
+                    print("NOT POSSIBLE") 
+                else: 
+                    print("GONE")
+                    print(shape_game_number_list)
+                    shape_game_itself = False 
+                    calculations_screen = True 
+            if calculations_screen == True and restart_shape_game_button.check_mouse_position(mouse_position): 
+                calculations_screen = False
+                shape_game_number_list = []
+                calculator_list = []
+                calculator_list_2 = []
+                start_game = True 
+                cube_boolean = False
+                triangle_boolean = False 
+                square_boolean = False 
+                octagon_boolean = False 
+                intermediate_shape_time = 5 
+        print(mouse_position)  # Prints mouse position in console, useful for trying to place objects. 
         if event.type == pygame.QUIT:
             run = False
     if start_game == True:  
@@ -438,12 +514,69 @@ while run:
     if intermediate_shape_game_screen == True: 
         draw_intermediate_shape()
     if shape_game_itself == True: 
-        win.fill((0,0,230))
+        win.fill((220,220,220))
+        draw_exclamation = shape_game_font.render("DRAW !", True, (255,0,0))
+        finished_shape_drawing = shape_game_font.render("Finished", True, (255,255,255))
+        win.blit(draw_exclamation, (20,20))
         for item in shape_game_number_list: 
             item.draw_point()
         finish_shape_drawing_button.draw_button()
+        win.blit(finished_shape_drawing, (65, 150))
     if calculations_screen == True: 
+        calculator_list_2 = []
         win.fill((230,230,230))
+        restart_Shape_game_font = shape_game_font.render("Restart", True, (255,255,255))
+        restart_shape_game_button.draw_button()
+        win.blit(restart_Shape_game_font, (69, 778))
+        for item in shape_game_number_list: 
+            item_2 = (item.x, item.y)
+            calculator_list.append(item_2)
+        if square_boolean == True: 
+            dist_1 = math.sqrt((689-calculator_list[0][0])**2 + (139-calculator_list[0][1])**2)
+            dist_2 = math.sqrt((697-calculator_list[1][0])**2 + (683-calculator_list[1][1])**2)
+            dist_3 = math.sqrt((1240-calculator_list[2][0])**2 + (142-calculator_list[2][1])**2)
+            dist_4 = math.sqrt((1240-calculator_list[3][0])**2 + (688-calculator_list[3][1])**2) 
+            calculator_list_2 = [dist_1, dist_2, dist_3, dist_4]
+        if triangle_boolean == True: 
+            dist_1 = math.sqrt((952-calculator_list[0][0])**2 + (202-calculator_list[0][1])**2)
+            dist_2 = math.sqrt((707-calculator_list[1][0])**2 + (645-calculator_list[1][1])**2)
+            dist_3 = math.sqrt((1197-calculator_list[2][0])**2 + (647-calculator_list[2][1])**2)
+            calculator_list_2 = [dist_1, dist_2, dist_3]
+        if octagon_boolean == True: 
+            dist_1 = math.sqrt((855-calculator_list[0][0])**2 + (152-calculator_list[0][1])**2)
+            dist_2 = math.sqrt((1095-calculator_list[1][0])**2 + (151-calculator_list[1][1])**2)
+            dist_3 = math.sqrt((1244-calculator_list[2][0])**2 + (314-calculator_list[2][1])**2)
+            dist_4 = math.sqrt((1237-calculator_list[3][0])**2 + (546-calculator_list[3][1])**2)
+            dist_5 = math.sqrt((1087-calculator_list[4][0])**2 + (716-calculator_list[4][1])**2)
+            dist_6 = math.sqrt((857-calculator_list[5][0])**2 + (719-calculator_list[5][1])**2)
+            dist_7 = math.sqrt((692-calculator_list[6][0])**2 + (555-calculator_list[6][1])**2)
+            dist_8 = math.sqrt((695-calculator_list[7][0])**2 + (321-calculator_list[7][1])**2)
+            calculator_list_2 = [dist_1, dist_2, dist_3, dist_4, dist_5, dist_6, dist_7, dist_8]
+        if cube_boolean == True: 
+            dist_1 = math.sqrt((876-calculator_list[0][0])**2 + (161-calculator_list[0][1])**2)
+            dist_2 = math.sqrt((1268-calculator_list[1][0])**2 + (156-calculator_list[1][1])**2)
+            dist_3 = math.sqrt((719-calculator_list[2][0])**2 + (719-calculator_list[2][1])**2)
+            dist_4 = math.sqrt((1129-calculator_list[3][0])**2 + (1129-calculator_list[3][1])**2)
+            dist_5 = math.sqrt((883-calculator_list[4][0])**2 + (883-calculator_list[4][1])**2)
+            dist_6 = math.sqrt((1262-calculator_list[5][0])**2 + (1262-calculator_list[5][1])**2)
+            dist_7 = math.sqrt((732-calculator_list[6][0])**2 + (732-calculator_list[6][1])**2)
+            dist_8 = math.sqrt((1138-calculator_list[7][0])**2 + (1138-calculator_list[7][1])**2)
+            calculator_list_2 = [dist_1, dist_2, dist_3, dist_4, dist_5, dist_6, dist_7, dist_8]
+        for distances in range(0,len(calculator_list_2)): 
+            if abs(calculator_list_2[distances]) > 200: 
+                calculator_list_2[distances] = 0 
+            else:
+                calculator_list_2[distances] = 100-((calculator_list_2[distances]/200)*100)
+        win.blit(shape_game_font.render(f"Accuracy for point 1:  {str(int(calculator_list_2[0]))}%", True, (0,0,0)), (785, 100))
+        win.blit(shape_game_font.render(f"Accuracy for point 2: {str(int(calculator_list_2[1]))}%", True, (0,0,0)), (785, 200))
+        win.blit(shape_game_font.render(f"Accuracy for point 3: {str(int(calculator_list_2[2]))}%", True, (0,0,0)), (785, 300))
+        if (square_boolean == True or cube_boolean == True or octagon_boolean == True):
+            win.blit(shape_game_font.render(f"Accuracy for point 4:  {str(int(calculator_list_2[3]))}%", True, (0,0,0)), (785, 400))
+        if (cube_boolean == True or octagon_boolean == True): 
+            win.blit(shape_game_font.render(f"Accuracy for point 5:  {str(int(calculator_list_2[4]))}%", True, (0,0,0)), (785, 500))
+            win.blit(shape_game_font.render(f"Accuracy for point 6:  {str(int(calculator_list_2[5]))}%", True, (0,0,0)), (785, 600))
+            win.blit(shape_game_font.render(f"Accuracy for point 7:  {str(int(calculator_list_2[6]))}%", True, (0,0,0)), (785, 700))
+            win.blit(shape_game_font.render(f"Accuracy for point 8: {str(int(calculator_list_2[7]))}%", True, (0,0,0)), (785, 800))
     if game == True:
         draw_math_game()
  
