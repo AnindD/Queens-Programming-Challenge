@@ -21,7 +21,7 @@ run = True
 database = mysql.connector.connect(
     host="localhost", 
     user="root", 
-    password="Ukusabmw123#",
+    password="N/A",
     database="testdatabase"
 )
 
