@@ -44,17 +44,22 @@ def fade():
 
 # Button Class, creates all of the buttons. 
 class Button(): 
-    def __init__(self, color, x, y, width, height, border): 
+    def __init__(self, color, x, y, width, height, border,): 
         self.color = color
         self.x = x
         self.y = y 
         self.width = width 
         self.height = height 
         self.border = border 
+ 
     
     def draw_button(self):
         pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height), self.border)
     
+    def draw_special_button(self,x,y):
+        win.blit(special_button, (x,y))
+        #Special draw button function to make customized button with png file??? let's try it and see how it works
+
     # Checks whether or not the position of your mouse cursor is inside the recantangular button and then presses accordingly. 
     def check_mouse_position(self, pos): 
         if pos[0] > self.x and pos[0] < self.x + self.width: 
@@ -66,6 +71,7 @@ class Button():
             return True 
         else: 
             return False 
+
 class Text_Field(): 
     def __init__(self, color, x, y): 
         self.x = x 
@@ -114,32 +120,36 @@ class Circle_Number_Point():
 # Images 
 PROJECT_ROOT = Path(__file__).parent.parent
 
-not_equal_sign = pygame.image.load(PROJECT_ROOT / "QPC_Folder/NotEqualSign.png")
+not_equal_sign = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/NotEqualSign.png")
 not_equal_sign = pygame.transform.scale(not_equal_sign, (250, 250))
-
-number_game_background = pygame.image.load(PROJECT_ROOT / "QPC_Folder/Number_Game_Background.png")
-number_game_background_2 = pygame.image.load(PROJECT_ROOT / "QPC_Folder/Number_Game_Background_2.png")
-logo = pygame.image.load(PROJECT_ROOT / "QPC_Folder/Propel_logo.jpg")
-counter_starter_button = pygame.image.load(PROJECT_ROOT / "QPC_Folder/Counter_Starter_Button.png")
-
-intermediate_screen_1 = pygame.image.load(PROJECT_ROOT / "QPC_Folder/intermediate_screen_1.png")
-intermediate_screen_2 = pygame.image.load(PROJECT_ROOT / "QPC_Folder/intermediate_screen_2.png")
+special_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/tryitbutton.png")
+special_button = pygame.transform.scale(special_button, (600, 600))
+# the initial to use the tryitbutton
 
 
-Square_Image = pygame.image.load(PROJECT_ROOT / "QPC_Folder/Shape_Game/Square.png")
-Triangle_Image = pygame.image.load(PROJECT_ROOT / "QPC_Folder/Shape_Game/Triangle.png")
-Cube_Image = pygame.image.load(PROJECT_ROOT / "QPC_Folder/Shape_Game/Cube.png")
-Octagon_Image = pygame.image.load(PROJECT_ROOT / "QPC_Folder/Shape_Game/Octagon.png")
-#Shape_Collage = pygame.image.load(PROJECT_ROOT / "QPC_Folder/Shape_Game/Shape_Selection_Collage.png")
+number_game_background = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Number_Game_Background.png")
+number_game_background_2 = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Number_Game_Background_2.png")
+logo = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Propel_logo.jpg")
+counter_starter_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Counter_Starter_Button.png")
+
+intermediate_screen_1 = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/intermediate_screen_1.png")
+intermediate_screen_2 = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/intermediate_screen_2.png")
+
+
+Square_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Square.png")
+Triangle_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Triangle.png")
+Cube_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Cube.png")
+Octagon_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Octagon.png")
+#Shape_Collage = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Shape_Selection_Collage.png")
 
 
 
 # Fonts 
-number_game_font = pygame.font.Font(PROJECT_ROOT / "QPC_Folder/Fonts/kremlin.ttf", 400)
-shape_game_font = pygame.font.Font(PROJECT_ROOT / "QPC_Folder/Fonts/Polymer Caps Book.ttf", 26)
-font = pygame.font.Font(PROJECT_ROOT / "QPC_Folder/Fonts/ContrailOne-Regular.ttf", 45)
-medium_font = pygame.font.Font(PROJECT_ROOT / "QPC_Folder/Fonts/ContrailOne-Regular.ttf", 60)
-large_font = pygame.font.Font(PROJECT_ROOT / "QPC_Folder/Fonts/ContrailOne-Regular.ttf", 100)
+number_game_font = pygame.font.Font(PROJECT_ROOT / "Queens_CS_Project_Folder/Fonts/kremlin.ttf", 400)
+shape_game_font = pygame.font.Font(PROJECT_ROOT / "Queens_CS_Project_Folder/Fonts/Polymer Caps Book.ttf", 26)
+font = pygame.font.Font(PROJECT_ROOT / "Queens_CS_Project_Folder/Fonts/ContrailOne-Regular.ttf", 45)
+medium_font = pygame.font.Font(PROJECT_ROOT / "Queens_CS_Project_Folder/Fonts/ContrailOne-Regular.ttf", 60)
+large_font = pygame.font.Font(PROJECT_ROOT / "Queens_CS_Project_Folder/Fonts/ContrailOne-Regular.ttf", 100)
 nav_font = pygame.font.SysFont(None, 40)
 
 # Buttons 
@@ -147,7 +157,7 @@ nav_font = pygame.font.SysFont(None, 40)
 create_account_button = Button((0,0,0), 1300, 25, 240, 50, 2)
 login_button = Button((0,0,0), 1600, 25, 140, 50, 2)
 
-start_button = Button((0,0,0), 100, 100, 500, 200, 2)
+start_button = Button((244,124,123), 100, 100, 500, 200, 2)
 quit_button = Button((0,0,0), 100, 400, 500, 200, 2)
 home_button = Button((255, 0, 0), 100, 25, 100, 50, 2)
 about_us_button = Button((255, 0, 0), 300, 25, 140, 50, 2)
@@ -365,7 +375,7 @@ def draw_start():
     news_font = nav_font.render("News", True, (0, 255, 0))
     services_font = nav_font.render("Services", True, (0, 255, 0))
     contact_us_font = nav_font.render("Contact Us", True, (0, 255, 0))
-    start_button.draw_button()
+    start_button.draw_special_button(0,-100) #use our own customized button
     quit_button.draw_button()
     create_account_button.draw_button()
     login_button.draw_button()
