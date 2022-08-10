@@ -1,14 +1,13 @@
 # Authors: Edwin Chen, Anindit Dewan, Jaelyn Wan 
 # Date: July, 26thm, 2022
 # Version: N/A 
-from re import M
 import pygame 
 import cv2 
 import numpy 
 import math 
-from pygame import mixer
 from pathlib import Path
-#import mysql.connector
+from pygame import mixer
+import mysql.connector
 
 
 # initialize the necessary variables 
@@ -18,7 +17,7 @@ pygame.display.set_caption("Queens University Project") # Title
 clock = pygame.time.Clock() # The clock (will be useful later) 
 run = True 
 
-""" Commented out because it could mess up downloads 
+"""
 # Database 
 database = mysql.connector.connect(
     host="localhost", 
@@ -26,8 +25,10 @@ database = mysql.connector.connect(
     password="N/A",
     database="testdatabase"
 )
+
 mycursor = database.cursor() 
-mycursor.execute("SELECT name FROM Users")
+mycursor.execute("SELECT * FROM Users")
+
 for x in mycursor: 
     print(x)
 """
@@ -44,22 +45,19 @@ def fade():
 
 # Button Class, creates all of the buttons. 
 class Button(): 
-    def __init__(self, color, x, y, width, height, border,): 
+    def __init__(self, color, x, y, width, height, border): 
         self.color = color
         self.x = x
         self.y = y 
         self.width = width 
         self.height = height 
         self.border = border 
- 
     
     def draw_button(self):
         pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height), self.border)
     
     def draw_special_button(self,x,y):
         win.blit(special_button, (x,y))
-        #Special draw button function to make customized button with png file??? let's try it and see how it works
-
     # Checks whether or not the position of your mouse cursor is inside the recantangular button and then presses accordingly. 
     def check_mouse_position(self, pos): 
         if pos[0] > self.x and pos[0] < self.x + self.width: 
@@ -71,7 +69,6 @@ class Button():
             return True 
         else: 
             return False 
-
 class Text_Field(): 
     def __init__(self, color, x, y): 
         self.x = x 
@@ -114,17 +111,15 @@ class Circle_Number_Point():
     def draw_point(self): 
         pygame.draw.circle(win, (255,0,0), (self.x, self.y), 30, 3)
 
-# import file 'Services.txt'
-#services_file = open('Services.txt', 'r')
-
-# Images / Music
+# Images 
 PROJECT_ROOT = Path(__file__).parent.parent
+
 
 not_equal_sign = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/NotEqualSign.png")
 not_equal_sign = pygame.transform.scale(not_equal_sign, (250, 250))
 special_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/tryitbutton.png")
 special_button = pygame.transform.scale(special_button, (600, 600))
-# the initial to use the tryitbutton
+
 
 sound_symbol = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Speaker_Icon.svg")
 sound_symbol = pygame.transform.scale(sound_symbol, (30, 30))
@@ -144,7 +139,7 @@ Square_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_
 Triangle_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Triangle.png")
 Cube_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Cube.png")
 Octagon_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Octagon.png")
-#Shape_Collage = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Shape_Selection_Collage.png")
+Shape_Collage = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Shape_Selection_Collage.png")
 
 
 
@@ -157,14 +152,13 @@ large_font = pygame.font.Font(PROJECT_ROOT / "Queens_CS_Project_Folder/Fonts/Con
 nav_font = pygame.font.SysFont(None, 40)
 
 # Buttons 
-
 music_button = Button((0, 153, 0), 1400, 30, 40, 40, 2)
+create_account_button = Button((0,0,0), 1300, 25, 240, 50, 2)
+login_button = Button((0,0,0), 1600, 25, 140, 50, 2)
 
-create_account_button = Button((0,0,0), 1200, 25, 240, 50, 2)
-login_button = Button((0,0,0), 1500, 25, 140, 50, 2)
-
-start_button = Button((244,124,123), 100, 100, 500, 200, 2)
+start_button = Button((0,0,0), 100, 100, 500, 200, 2)
 quit_button = Button((0,0,0), 100, 400, 500, 200, 2)
+scoreboard_button = Button((0,0,0), 100, 700, 500, 150, 2)
 home_button = Button((255, 0, 0), 100, 25, 100, 50, 2)
 about_us_button = Button((255, 0, 0), 300, 25, 140, 50, 2)
 news_button = Button((255, 0, 0), 540, 25, 100, 50, 2)
@@ -172,22 +166,31 @@ services_button = Button((255, 0, 0), 740, 25, 130, 50, 2)
 contact_us_button = Button((255, 0, 0), 970, 25, 180, 50, 2)
 exit_button = Button((255, 0, 0), 1250, 25, 100, 50, 2)
 nav_bar_buttons = [home_button, about_us_button, news_button, services_button, contact_us_button]
-
 back_button = Button((255, 0, 0), 1250, 600, 120, 50, 2)
+
 
 math_game_button = Button((0,0,0), 0, 450, 600, 450, 4)
 shape_game_button = Button((0,0,0), 600.5, 450, 600, 450, 4)
 
 game_one_okay_button = Button((255,0,0), 546, 538, 163, 62, 0)
 game_one_restart_button = Button((255,255,255), 1505, 800, 300, 62, 0)
+game_one_save_button = Button((255,255,255), 1505, 700, 300, 62, 0)
 shape_game_okay_button = Button((255,255,255), 837, 815, 163, 62, 0)
 
 finish_shape_drawing_button = Button((0,0,0), 55, 121, 125, 100, 0)
 restart_shape_game_button = Button((0,0,0), 55,750, 150, 100, 0)
+save_shape_game_button = Button((0,0,0), 55, 550, 150, 100, 0)
 
 username_text_field = Text_Field((255,255,255), 246, 263)
 password_text_field = Text_Field((255,255,255), 246, 443)
 submit_button = Button((255,255,255), 529, 591, 300, 50, 0)
+
+login_username_text_field = Text_Field((255,255,255), 246, 263)
+login_password_text_field = Text_Field((255,255,255), 246, 443)
+login_submit_button = Button((255,255,255), 529, 591, 300, 50, 0)
+
+math_music_clicked = True
+shape_music_clicked = True
 
 # Shape Game Buttons 
 square = Button((255,0,0), 0, 0, 211, 225, 1)
@@ -207,14 +210,14 @@ intermediate_screen = False
 counter_starter_button_boolean = True  
 start_first_game = False 
 create_account_page = False 
+login_page = False 
+scoreboard_page = False 
 home_info_page = False
 about_us_page = False
 news_info_page = False
 services_page = False
 contact_us_page = False
-
-math_music_clicked = True
-shape_music_clicked = True
+game_end = False 
 
 # Shape game booleans 
 square_boolean = False 
@@ -238,6 +241,12 @@ username_text = ""
 password_text = ""
 username_input_active = False 
 password_input_active = False 
+login_username_text = ""
+login_password_text = ""
+login_username_input_active = False 
+login_password_input_active = False 
+logged_in_username = ""
+score_list = [] 
 
 # Thresholds, for the first see line 252 
 changing_number_threshold = 1
@@ -253,8 +262,6 @@ intermediate_shape_time = 5
 shape_timer_boolean = False 
 
 
-# Display some info about the 5 buttons regarding our team
-# (Home, About Us, News, Services, Contact Us)
 def Home_Info():
     win.fill((255, 204, 204))
     IntrotoUs = medium_font.render("Who are we? Propel!", True, (0, 102, 51))
@@ -328,7 +335,6 @@ def Contact_Us_Info():
     Back = font.render("Back", True, (255, 255, 255))
     win.blit(Back, (1260, 600))
     
-    
 # Arcs which will be used for the timer. 
 def drawArcCv2(surf, color, center, radius, width, end_angle):
     circle_image = numpy.zeros((radius*2+4, radius*2+4, 4), dtype = numpy.uint8)
@@ -367,8 +373,6 @@ constant_len_list = len(number_point_list)
 number_list = [1,2,3,4,5,6,7,8,9,10]
 
 shape_game_number_list = []
-
-# display the different shapes in the shape game, depending on which button the user clicks
 def draw_shapes():
     if octagon_boolean == True: 
         win.blit(Octagon_Image, (678,131))
@@ -378,7 +382,6 @@ def draw_shapes():
         win.blit(Cube_Image, (612, 81))
     if square_boolean == True: 
         win.blit(Square_Image, (696, 141)) 
-
 
 # Draw all the necessary components for the start menu. 
 def draw_start():
@@ -390,10 +393,9 @@ def draw_start():
     news_font = nav_font.render("News", True, (0, 255, 0))
     services_font = nav_font.render("Services", True, (0, 255, 0))
     contact_us_font = nav_font.render("Contact Us", True, (0, 255, 0))
-    create_acc_font = nav_font.render("Create Account", True, (0, 0, 0))
-    login_font = nav_font.render("Log In", True, (0, 0, 0))
-    start_button.draw_special_button(0,-100) #use our own customized button
+    start_button.draw_special_button(0,-100)
     quit_button.draw_button()
+    scoreboard_button.draw_button()
     create_account_button.draw_button()
     login_button.draw_button()
     for buttons in nav_bar_buttons: 
@@ -406,10 +408,6 @@ def draw_start():
     win.blit(news_font, (550, 30))
     win.blit(services_font, (750, 30))
     win.blit(contact_us_font, (980, 30))
-    win.blit(create_acc_font, (1210, 30))
-    win.blit(login_font, (1510, 30))
-
-
 
 def draw_create_account(): 
     win.fill((0,0,0))
@@ -424,14 +422,71 @@ def draw_create_account():
     win.blit(username_font_2, (254, 260))
     win.blit(password_font_2, (254, 435))
     submit_button.draw_button()
+    if username_input_active == True: 
+            pygame.draw.circle(win, (0,255,0), (452,224), 15)
+    if password_input_active == True: 
+            pygame.draw.circle(win, (0,255,0), (452, 400), 15)
 
+def draw_login_account(): 
+    win.fill((0,0,0))
+    username_font = font.render("Username", True, (255,255,255))
+    password_font = font.render("Password", True, (255,255,255))
+    username_font_2 = font.render(login_username_text,  True, (255,255,255))
+    password_font_2 = font.render(login_password_text,  True, (255,255,255))
+    login_username_text_field.draw_text_field() 
+    login_password_text_field.draw_text_field() 
+    win.blit(username_font, (246, 200))
+    win.blit(password_font, (254, 380))
+    win.blit(username_font_2, (254, 260))
+    win.blit(password_font_2, (254, 435))
+    login_submit_button.draw_button() 
+    if login_username_input_active == True: 
+            pygame.draw.circle(win, (0,255,0), (452,224), 15)
+    if login_password_input_active == True: 
+            pygame.draw.circle(win, (0,255,0), (452, 400), 15)
 
-# intermediate screen (for selecting which game to play)
+def draw_scoreboard(): 
+    win.fill((0,0,0))
+    scoreboard_font = font.render(f"SCOREBOARD for user: {logged_in_username}", True, (255,255,255))
+    fastest_time = font.render("Game #1, Fastest Time To Guess Letters: ", True, (255,255,255))
+    square_accuracy =  font.render("Square Highest Accuracy: ", True, (255,255,255))
+    triangle_accuracy = font.render("Triangle Highest Accuracy: ", True, (255,255,255))
+    octagon_accuracy =  font.render("Octagon Highest Accuracy: ", True, (255,255,255))
+    cube_accuracy = font.render("Cube Highest Accuracy: ", True, (255,255,255))
+    if len(score_list) > 0: 
+        try: 
+            win.blit(font.render(f"{str(score_list[0])} Seconds", True, (255,255,255)), (1400, 300))
+        except: 
+            pass 
+        try: 
+            win.blit(font.render(f"{str(score_list[1])}%", True, (255,255,255)), (1400, 400))
+        except: 
+            pass 
+        try: 
+            win.blit(font.render(f"{str(score_list[2])}%", True, (255,255,255)), (1400, 500))
+        except: 
+            pass 
+        try: 
+            win.blit(font.render(f"{str(score_list[3])}%", True, (255,255,255)), (1400, 600))
+        except: 
+            pass 
+        try: 
+            win.blit(font.render(f"{str(score_list[4])}%", True, (255,255,255)), (1400, 700))
+        except: 
+            pass 
+    win.blit(scoreboard_font, (300, 100))
+    win.blit(fastest_time, (200, 300))
+    win.blit(square_accuracy, (200, 400))
+    win.blit(triangle_accuracy, (200, 500))
+    win.blit(octagon_accuracy, (200, 600))
+    win.blit(cube_accuracy, (200, 700))
+
 def draw_intermediate(): 
     win.fill((220,220,220))
 
     math_game = font.render("MATH GAME", True, (0,0,0))
     shape_game = font.render("SHAPE GAME", True, (0,0,0))
+
 
     win.blit(intermediate_screen_1, (0,0))
     win.blit(intermediate_screen_2, (600, 0))
@@ -456,8 +511,6 @@ def draw_intermediate_shape():
 
 delete_list = False
 
-
-# display all components of the geometric shape game
 def draw_shape_game():
     global shape_music_clicked
     win.fill((230,230,230))
@@ -474,9 +527,8 @@ def draw_shape_game():
     win.blit(triangle_font, (64, 397))
     win.blit(octagon_font, (75, 635))
     win.blit(cube_font, (56, 860)) 
-    #win.blit(Shape_Collage, (0,0))
-    
-    # Music Button
+    win.blit(Shape_Collage, (0,0))
+
     music_button.draw_button()
     if shape_music_clicked == True:
         pygame.draw.rect(win, (0, 153, 0), pygame.Rect(1400, 30, 40, 40))
@@ -492,61 +544,14 @@ def draw_shape_game():
 
     shape_game_okay_button.draw_button()
     win.blit(shape_okay_button_font, (871, 815))
-    
     back_button.draw_button()
     pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1250, 600, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
     win.blit(Back, (1260, 600))
 
-
-
-def calculate_shape_points(): 
-    calculator_list = []
-    # Modify each number point object into a list 
-    for item in shape_game_number_list: 
-        item_2 = (item.x, item.y)
-        calculator_list.append(item_2)
-    if square_boolean == True: 
-        dist_1 = math.sqrt((689-calculator_list[0][0])**2 + (139-calculator_list[0][1])**2)
-        dist_2 = math.sqrt((697-calculator_list[1][0])**2 + (683-calculator_list[1][1])**2)
-        dist_3 = math.sqrt((1240-calculator_list[2][0])**2 + (142-calculator_list[2][1])**2)
-        dist_4 = math.sqrt((1240-calculator_list[3][0])**2 + (688-calculator_list[3][1])**2) 
-        calculator_list = [dist_1, dist_2, dist_3, dist_4]
-    if triangle_boolean == True: 
-        dist_1 = math.sqrt((952-calculator_list[0][0])**2 + (202-calculator_list[0][1])**2)
-        dist_2 = math.sqrt((707-calculator_list[1][0])**2 + (645-calculator_list[1][1])**2)
-        dist_3 = math.sqrt((1197-calculator_list[2][0])**2 + (647-calculator_list[2][1])**2)
-        calculator_list = [dist_1, dist_2, dist_3]
-    if octagon_boolean == True: 
-        dist_1 = math.sqrt((855-calculator_list[0][0])**2 + (152-calculator_list[0][1])**2)
-        dist_2 = math.sqrt((1095-calculator_list[1][0])**2 + (151-calculator_list[1][1])**2)
-        dist_3 = math.sqrt((1244-calculator_list[2][0])**2 + (314-calculator_list[2][1])**2)
-        dist_4 = math.sqrt((1237-calculator_list[3][0])**2 + (546-calculator_list[3][1])**2)
-        dist_5 = math.sqrt((1087-calculator_list[4][0])**2 + (716-calculator_list[4][1])**2)
-        dist_6 = math.sqrt((857-calculator_list[5][0])**2 + (719-calculator_list[5][1])**2)
-        dist_7 = math.sqrt((692-calculator_list[6][0])**2 + (555-calculator_list[6][1])**2)
-        dist_8 = math.sqrt((695-calculator_list[7][0])**2 + (321-calculator_list[7][1])**2)
-        calculator_list = [dist_1, dist_2, dist_3, dist_4, dist_5, dist_6, dist_7, dist_8]
-    if cube_boolean == True: 
-        dist_1 = math.sqrt((876-calculator_list[0][0])**2 + (161-calculator_list[0][1])**2)
-        dist_2 = math.sqrt((1268-calculator_list[1][0])**2 + (156-calculator_list[1][1])**2)
-        dist_3 = math.sqrt((719-calculator_list[2][0])**2 + (281-calculator_list[2][1])**2)
-        dist_4 = math.sqrt((1129-calculator_list[3][0])**2 + (276-calculator_list[3][1])**2)
-        dist_5 = math.sqrt((883-calculator_list[4][0])**2 + (574-calculator_list[4][1])**2)
-        dist_6 = math.sqrt((1262-calculator_list[5][0])**2 + (568-calculator_list[5][1])**2)
-        dist_7 = math.sqrt((732-calculator_list[6][0])**2 + (720-calculator_list[6][1])**2)
-        dist_8 = math.sqrt((1138-calculator_list[7][0])**2 + (712-calculator_list[7][1])**2)
-        calculator_list = [dist_1, dist_2, dist_3, dist_4, dist_5, dist_6, dist_7, dist_8]
-    for distances in range(0,len(calculator_list)): 
-        if abs(calculator_list[distances]) > 200: 
-            calculator_list[distances] = 0 
-        else:
-            calculator_list[distances] = int(100-((calculator_list[distances]/200)*100)) 
-            
-             
 # Draw all necessary components for the mathematics game. 
 def draw_math_game(): 
-    global math_music_clicked
+    global game_end 
     win.blit(number_game_background_2, (0,0))
     pygame.draw.rect(win, (0,0,0), (1505,0, 295, 900))
 
@@ -561,9 +566,7 @@ def draw_math_game():
     secondary_counter_font = font.render(str(threshold_counter), True, (255,0,0))
     congrats_font = font.render("Congratulations, you've clicked on all numbers !", True, (0,0,0))
     first_game_counter_text = font.render(str(first_game_counter), True, (0,122,0))
-    
-    
-    # Music Button
+
     music_button.draw_button()
     if math_music_clicked == True:
         pygame.draw.rect(win, (0, 153, 0), pygame.Rect(1400, 30, 40, 40))
@@ -571,6 +574,7 @@ def draw_math_game():
     else:
         pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1400, 30, 40, 40))
         win.blit(no_sound_symbol, (1405, 35))
+    
 
     # Game text 
     if len(number_point_list) == constant_len_list:
@@ -580,6 +584,7 @@ def draw_math_game():
         win.blit(secondary_counter_font, (46, 801))
     elif len(number_point_list) == 0: 
         win.blit(congrats_font, (255,355))
+        game_end = True 
     if len(number_point_list) > 0: 
         number_point_list[0].draw_point()
     
@@ -593,6 +598,7 @@ def draw_math_game():
         else: 
             game_one_okay_button.color = (0,0,0)
             win.blit(game_1_okay_black, (580, 540))
+    
 
     # Timer 
     pygame.draw.circle(win, (255,255,255), (1620,517), 77)
@@ -600,28 +606,30 @@ def draw_math_game():
     if first_game_counter != 0: 
         drawArcCv2(win, (0, 122, 0), (1625, 520), 90, 20, 360*first_game_counter/60)
     game_one_restart_button.draw_button()
+    game_one_save_button.draw_button()
     win.blit(restart_font, (1566, 809))
-    
+    win.blit(font.render("Save", True, (0,0,0)), (1566, 709))
     back_button.draw_button()
     pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1250, 600, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
     win.blit(Back, (1260, 600))
 
 username_counter = 0 
-password_counter = 0 
+password_counter = 0
+login_username_counter = 0 
+login_password_counter = 0  
 
-while run:  
+while run: 
     for event in pygame.event.get(): 
         keys = pygame.key.get_pressed()
         mouse_position = pygame.mouse.get_pos() 
 
         if event.type == timer_event and first_timer_boolean == True:
-            if first_game_counter > 0: 
+            if first_game_counter > 0 and game_end == False: 
                 first_game_counter -= 1 
             if first_game_counter == 0: 
                 first_game_counter = 0 
                 start_first_game = False 
-                
         if event.type == timer_event and shape_timer_boolean == True: 
             if intermediate_shape_time > 0: 
                 intermediate_shape_time -= 1 
@@ -641,9 +649,18 @@ while run:
                     password_text = password_text[:-1]
                 else: 
                     password_text += event.unicode  
+        if event.type == pygame.KEYDOWN and login_page == True: 
+            if login_username_input_active == True:  
+                if event.key == pygame.K_BACKSPACE: 
+                    login_username_text = login_username_text[:-1]
+                else: 
+                    login_username_text += event.unicode
+            if login_password_input_active == True: 
+                if event.key == pygame.K_BACKSPACE:
+                    login_password_text = login_password_text[:-1]
+                else: 
+                    login_password_text += event.unicode  
             
-        
-
         if event.type == pygame.MOUSEBUTTONDOWN:
             if home_button.check_mouse_position(mouse_position) and start_game == True:
                 fade()
@@ -699,20 +716,32 @@ while run:
                 fade()
                 intermediate_screen = False
                 start_game = True
-                
-                
             if start_button.check_mouse_position(mouse_position) and start_game == True: 
                 fade()
                 start_game = False
                 intermediate_screen = True   
                 print("Start Button Clicked")
-
+            if shape_game == True and back_button.check_mouse_position(mouse_position):
+                fade()
+                shape_game = False
+                mixer.music.pause()
+                intermediate_screen = True
+            if game == True and back_button.check_mouse_position(mouse_position):
+                fade()
+                game = False
+                intermediate_screen = True
             if quit_button.check_mouse_position(mouse_position) and start_game == True:
                 fade()
                 pygame.quit() 
+            if scoreboard_button.check_mouse_position(mouse_position) and start_game == True: 
+                start_game = False 
+                scoreboard_page = True 
             if create_account_button.check_mouse_position(mouse_position) and start_game == True: 
                 create_account_page = True 
                 start_game = False 
+            if login_button.check_mouse_position(mouse_position) and start_game == True: 
+                start_game = False 
+                login_page = True 
             if username_text_field.click_text_field(mouse_position) and create_account_page == True: 
                 username_counter += 1 
                 if username_counter % 2 != 0:
@@ -720,16 +749,75 @@ while run:
                 if username_counter % 2 == 0: 
                     username_input_active = False                  
             if password_text_field.click_text_field(mouse_position) and create_account_page == True: 
+                print(password_input_active)
                 password_counter += 1 
                 if password_counter % 2 != 0: 
                     password_input_active = True 
-                if username_counter % 2 == 0: 
-                    password_input_active = True 
+                if password_counter % 2 == 0: 
+                    password_input_active = False
+            if login_username_text_field.click_text_field(mouse_position) and login_page == True: 
+                login_username_counter += 1 
+                if login_username_counter % 2 != 0:
+                    login_username_input_active = True 
+                if login_username_counter % 2 == 0: 
+                    login_username_input_active = False                  
+            if login_password_text_field.click_text_field(mouse_position) and login_page == True: 
+                login_password_counter += 1 
+                if login_password_counter % 2 != 0: 
+                    login_password_input_active = True 
+                if login_password_counter % 2 == 0: 
+                    login_password_input_active = False
             if submit_button.check_mouse_position(mouse_position) and create_account_page == True: 
                 if len(password_text) < 8: 
                     print("Password not adaqueate enough")
-                elif len(username_text) > 20: 
+                elif len(username_text) > 25: 
                     print("Username not adequate")
+                # DATABASE - [DO NOT TOUCH]
+                else: 
+                    print(username_text)
+                    print(password_text)
+                    mycursor.execute("INSERT INTO Users (name, password) VALUES (%s, %s)", (username_text, password_text))
+                    database.commit()
+                    username_text = ""
+                    password_text = ""
+            # DATABASE - [DO NOT TOUCH]
+            if login_submit_button.check_mouse_position(mouse_position) and login_page == True: 
+                username_found = False 
+                mycursor.execute("SELECT name FROM Users")
+                username_list = []
+                password_list = []
+                for x in mycursor: 
+                    my_list = list(x)
+                    username_list.append(my_list[0]) 
+                mycursor.execute("SELECT password FROM Users")
+                for y in mycursor: 
+                    my_list = list(y)
+                    password_list.append(my_list[0])
+                username_password_dictionary = dict(zip(username_list, password_list))
+                for key in username_password_dictionary: 
+                    if key == login_username_text: 
+                        username_found = True 
+                        break 
+                    else: 
+                        print("Username not found")
+                        username_found = False 
+                if username_found == True: 
+                    if username_password_dictionary[login_username_text] == login_password_text:
+                        print("Successfully logged in") 
+                        logged_in_username = login_username_text
+                        mycursor.execute("SELECT ScoreGameOne, ScoreGameTwo, ScoreGameThree, ScoreGameFour, ScoreGameFive FROM Users WHERE name = %s",(logged_in_username,))
+                        score_list = list(mycursor.fetchall()[0]) 
+                        login_page = False 
+                        start_game = True 
+                        print("Successfully logged in as ", logged_in_username)
+                    else: 
+                        print("Not logged in")
+                login_username_text = ""
+                login_password_text = ""
+                username_list = []
+                password_list = []
+                
+                
                 
             if intermediate_screen == True and math_game_button.check_mouse_position(mouse_position):
                 intermediate_screen = False 
@@ -738,10 +826,9 @@ while run:
             if intermediate_screen == True and shape_game_button.check_mouse_position(mouse_position):
                 intermediate_screen = False
                 shape_game = True 
-                    
-            
+
             if game == True:
-                mixer.music.load("BWV_989_Variation_no1.mp3")
+                mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/BWV_989_Variation_no1.mp3")
                 mixer.music.set_volume(1)
                 mixer.music.play(-1)
                 if music_button.check_mouse_position(mouse_position):
@@ -750,14 +837,16 @@ while run:
                         mixer.music.pause()
                     else:
                         mixer.music.play(loops = -1)
+
+            if shape_game == True:
+                mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Goldberg_Variations_BWV_988_-_Aria.mp3")
+                mixer.music.set_volume(1)
+                mixer.music.play(-1)
+                if music_button.check_mouse_position(mouse_position) and shape_game == True:
+                    shape_music_clicked = not shape_music_clicked
                     
-            
-            if game == True and back_button.check_mouse_position(mouse_position):
-                fade()
-                game = False
-                mixer.music.pause()
-                intermediate_screen = True
-                
+                    
+
             if game == True and game_one_okay_button.check_mouse_position(mouse_position): 
                 counter_starter_button_boolean = False 
                 first_timer_boolean = True 
@@ -780,6 +869,15 @@ while run:
                 changing_number_threshold = 1
                 first_game_counter = 60 
                 start_first_game = True 
+            if game == True and game_one_save_button.check_mouse_position(mouse_position): 
+                print("SAVED!")
+                if logged_in_username == "": 
+                    pass 
+                # DATABASE - [DO NOT TOUCH]
+                else: 
+                    mycursor.execute("UPDATE Users SET ScoreGameOne = %s WHERE name = %s", (60-first_game_counter, logged_in_username))
+                    database.commit()
+
             # Deletes points. 
             for number_points in number_point_list:
                 if number_points.check_mouse_position(mouse_position) and game == True and counter_starter_button_boolean == False and start_first_game == True: 
@@ -790,25 +888,7 @@ while run:
                         threshold_counter = 0 
                     number_point_list.pop(number_point_list.index(number_points)) 
                     number_points.color == (255,0,0)
-            
-            if shape_game == True:
-                mixer.music.load("Goldberg_Variations_BWV_988_-_Aria.mp3")
-                mixer.music.set_volume(1)
-                mixer.music.play(-1)
-                if music_button.check_mouse_position(mouse_position):
-                    shape_music_clicked = not shape_music_clicked
-                    if not shape_music_clicked:
-                        mixer.music.pause()
-                    else:
-                        mixer.music.play(loops = -1)
-                    
-                    
-            if shape_game == True and back_button.check_mouse_position(mouse_position):
-                fade()
-                shape_game = False
-                mixer.music.pause()
-                intermediate_screen = True
-                    
+
             if shape_game == True and square.check_mouse_position(mouse_position): 
                 square_boolean = True 
                 triangle_boolean = False 
@@ -829,7 +909,6 @@ while run:
                 shape_select = True  
                 octagon_boolean = False
             if shape_game == True and cube.check_mouse_position(mouse_position):
-                print("CUBE WORKS!")
                 square_boolean = False 
                 triangle_boolean = False 
                 cube_boolean = True 
@@ -861,6 +940,29 @@ while run:
                     print(shape_game_number_list)
                     shape_game_itself = False 
                     calculations_screen = True 
+            if calculations_screen == True and save_shape_game_button.check_mouse_position(mouse_position): 
+                print("SAVED!") 
+                average = 0 
+                for x in calculator_list_2: 
+                    average += x 
+                average = (average/len(calculator_list_2))  
+                # DATABASE - [DO NOT TOUCH]
+                try:                   
+                    if square_boolean == True: 
+                        mycursor.execute("UPDATE Users SET ScoreGameTwo = %s WHERE name = %s", (average, logged_in_username))
+                        database.commit()
+                    if triangle_boolean == True:
+                        mycursor.execute("UPDATE Users SET ScoreGameThree = %s WHERE name = %s", (average, logged_in_username))
+                        database.commit()
+                    if octagon_boolean == True: 
+                        mycursor.execute("UPDATE Users SET ScoreGameFour = %s WHERE name = %s", (average, logged_in_username))
+                        database.commit()
+                    if cube_boolean == True: 
+                        mycursor.execute("UPDATE Users SET ScoreGameFive = %s WHERE name = %s", (average, logged_in_username))
+                        database.commit()
+                except: 
+                    pass 
+
             if calculations_screen == True and restart_shape_game_button.check_mouse_position(mouse_position): 
                 calculations_screen = False
                 shape_game_number_list = []
@@ -875,6 +977,8 @@ while run:
         #print(mouse_position)  # Prints mouse position in console, useful for trying to place objects. 
         if event.type == pygame.QUIT:
             run = False
+    if start_game == True:  
+        draw_start()
     if home_info_page == True:
         Home_Info()
     if about_us_page == True:
@@ -885,14 +989,18 @@ while run:
         Services_Info()
     if contact_us_page == True:
         Contact_Us_Info()
-    if start_game == True:  
-        draw_start()
     if create_account_page == True: 
         draw_create_account() 
+    if login_page == True: 
+        draw_login_account()
+    if scoreboard_page == True: 
+        draw_scoreboard() 
     if intermediate_screen == True: 
         draw_intermediate()
     if shape_game == True: 
         draw_shape_game() 
+        if len(number_point_list) == 0: 
+            start_first_game = False 
     if intermediate_shape_game_screen == True: 
         draw_intermediate_shape()
     if shape_game_itself == True: 
@@ -909,6 +1017,7 @@ while run:
         win.fill((230,230,230))
         restart_Shape_game_font = shape_game_font.render("Restart", True, (255,255,255))
         restart_shape_game_button.draw_button()
+        save_shape_game_button.draw_button() 
         win.blit(restart_Shape_game_font, (69, 778))
         for item in shape_game_number_list: 
             item_2 = (item.x, item.y)
