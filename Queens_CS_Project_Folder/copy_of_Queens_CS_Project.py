@@ -58,7 +58,7 @@ class Button():
     
     def draw_special_button(self,x,y):
         win.blit(special_button, (x,y))
-        #Special draw button function to make customized button with png file??? let's try it and see how it works
+        #Special draw button function to make customized button with png file??? let's try it and see how it works. we can design more buttons if needed
 
     # Checks whether or not the position of your mouse cursor is inside the recantangular button and then presses accordingly. 
     def check_mouse_position(self, pos): 
