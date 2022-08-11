@@ -1,3 +1,4 @@
+
 # Authors: Edwin Chen, Anindit Dewan, Jaelyn Wan 
 # Date: July, 26thm, 2022
 # Version: N/A 
@@ -25,10 +26,8 @@ run = True
     password="Root",
     database="testdatabase"
 )
-
 mycursor = database.cursor() 
 mycursor.execute("SELECT * FROM Users")
-
 for x in mycursor: 
     print(x)"""
 
@@ -133,6 +132,8 @@ sound_symbol = pygame.transform.scale(sound_symbol, (30, 30))
 no_sound_symbol = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/speaker-slash.webp")
 no_sound_symbol = pygame.transform.scale(no_sound_symbol, (30, 30))
 
+create_account_background = pygame.image.load(PROJECT_ROOT /"Queens_CS_Project_Folder/Create_Account_Background.png") 
+login_background = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Login_Background.png")
 number_game_background = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Number_Game_Background.png")
 number_game_background_2 = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Number_Game_Background_2.png")
 logo = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Propel_logo.jpg")
@@ -427,6 +428,7 @@ def draw_start():
 
 def draw_create_account(): 
     win.fill((0,0,0))
+    win.blit(create_account_background, (0,0))
     create_account_font = font.render("ACCOUNT CREATION PAGE", True, (255,255,255))
     username_font = font.render("Username", True, (255,255,255))
     password_font = font.render("Password", True, (255,255,255))
@@ -453,6 +455,7 @@ def draw_create_account():
 
 def draw_login_account(): 
     win.fill((0,0,0))
+    win.blit(login_background, (0,0))
     login_account_font = font.render("LOGIN PAGE", True, (255,255,255))
     username_font = font.render("Username", True, (255,255,255))
     password_font = font.render("Password", True, (255,255,255))
@@ -466,9 +469,9 @@ def draw_login_account():
     win.blit(username_font_2, (254, 260))
     win.blit(password_font_2, (254, 440)) 
     win.blit(login_account_font, (640, 20))
-    win.blit(submit_font, (600, 592))
 
     login_submit_button.draw_button() 
+    win.blit(submit_font, (600, 592))
     if login_username_input_active == True: 
             pygame.draw.circle(win, (0,255,0), (452,224), 15)
     if login_password_input_active == True: 
@@ -532,6 +535,7 @@ def draw_intermediate():
     math_game_button.draw_button()
     shape_game_button.draw_button()
     pygame.draw.rect(win, (0,0,0), (600, 0, 5, 450), 0)
+    pygame.draw.rect(win, (0,0,0), (1195, 0, 5, 450))
     back_button.draw_button()
     pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
@@ -1126,3 +1130,4 @@ while run:
     pygame.display.update()
 
 pygame.quit()
+ 
