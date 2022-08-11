@@ -17,12 +17,12 @@ pygame.display.set_caption("Queens University Project") # Title
 clock = pygame.time.Clock() # The clock (will be useful later) 
 run = True 
 
-"""
+
 # Database 
-database = mysql.connector.connect(
+"""database = mysql.connector.connect(
     host="localhost", 
     user="root", 
-    password="N/A",
+    password="Root",
     database="testdatabase"
 )
 
@@ -30,8 +30,8 @@ mycursor = database.cursor()
 mycursor.execute("SELECT * FROM Users")
 
 for x in mycursor: 
-    print(x)
-"""
+    print(x)"""
+
 
 # Fade animation, triggers after each button press. 
 def fade(): 
@@ -147,6 +147,7 @@ Shape_Collage = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape
 number_game_font = pygame.font.Font(PROJECT_ROOT / "Queens_CS_Project_Folder/Fonts/kremlin.ttf", 400)
 shape_game_font = pygame.font.Font(PROJECT_ROOT / "Queens_CS_Project_Folder/Fonts/Polymer Caps Book.ttf", 26)
 font = pygame.font.Font(PROJECT_ROOT / "Queens_CS_Project_Folder/Fonts/ContrailOne-Regular.ttf", 45)
+small_font = pygame.font.Font(PROJECT_ROOT / "Queens_CS_Project_Folder/Fonts/ContrailOne-Regular.ttf", 26)
 medium_font = pygame.font.Font(PROJECT_ROOT / "Queens_CS_Project_Folder/Fonts/ContrailOne-Regular.ttf", 60)
 large_font = pygame.font.Font(PROJECT_ROOT / "Queens_CS_Project_Folder/Fonts/ContrailOne-Regular.ttf", 100)
 nav_font = pygame.font.SysFont(None, 40)
@@ -166,15 +167,15 @@ services_button = Button((255, 0, 0), 740, 25, 130, 50, 2)
 contact_us_button = Button((255, 0, 0), 970, 25, 180, 50, 2)
 exit_button = Button((255, 0, 0), 1250, 25, 100, 50, 2)
 nav_bar_buttons = [home_button, about_us_button, news_button, services_button, contact_us_button]
-back_button = Button((255, 0, 0), 1250, 600, 120, 50, 2)
+back_button = Button((255, 0, 0), 1680, 850, 120, 50, 2)
 
 
 math_game_button = Button((0,0,0), 0, 450, 600, 450, 4)
 shape_game_button = Button((0,0,0), 600.5, 450, 600, 450, 4)
 
 game_one_okay_button = Button((255,0,0), 546, 538, 163, 62, 0)
-game_one_restart_button = Button((255,255,255), 1505, 800, 300, 62, 0)
-game_one_save_button = Button((255,255,255), 1505, 700, 300, 62, 0)
+game_one_restart_button = Button((255,255,255), 1505, 700, 300, 62, 0)
+game_one_save_button = Button((255,255,255), 1505, 770, 300, 62, 0)
 shape_game_okay_button = Button((255,255,255), 837, 815, 163, 62, 0)
 
 finish_shape_drawing_button = Button((0,0,0), 55, 121, 125, 100, 0)
@@ -246,6 +247,8 @@ login_password_text = ""
 login_username_input_active = False 
 login_password_input_active = False 
 logged_in_username = ""
+asterik_password_creation = ""
+asterik_password_login = ""
 score_list = [] 
 
 # Thresholds, for the first see line 252 
@@ -278,9 +281,9 @@ def Home_Info():
     Unable = large_font.render("Unable", True, (0, 204, 0))
     win.blit(Unable, (600, 500))
     back_button.draw_button()
-    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1250, 600, 120, 50))
+    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
-    win.blit(Back, (1260, 600))
+    win.blit(Back, (1690, 850))
     
 def About_Us_Info():
     win.fill((255, 204, 153))
@@ -289,18 +292,18 @@ def About_Us_Info():
     WeEnjoy = font.render("We enjoy finding innovative solutions to real-world issues.", True, (153, 0, 76))
     win.blit(WeEnjoy, (180, 110))
     back_button.draw_button()
-    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1250, 600, 120, 50))
+    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
-    win.blit(Back, (1260, 600))
+    win.blit(Back, (1690, 850))
 
 def News_Info():
     win.fill((102, 255, 255))
     NoNews = font.render("There is currently no news here. Check back later for updates!", True, (255, 128, 0))
     win.blit(NoNews, (130, 350))
     back_button.draw_button()
-    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1250, 600, 120, 50))
+    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
-    win.blit(Back, (1260, 600))
+    win.blit(Back, (1690, 850))
     
 def Services_Info():
     win.fill((178, 255, 102))
@@ -318,9 +321,9 @@ def Services_Info():
     #AsStudents = font.render(rLine, True, (204, 0, 0))
     #win.blit(AsStudents, (120, 50))
     back_button.draw_button()
-    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1250, 600, 120, 50))
+    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
-    win.blit(Back, (1260, 600))
+    win.blit(Back, (1690, 850))
     
 def Contact_Us_Info():
     win.fill((255, 255, 102))
@@ -331,9 +334,9 @@ def Contact_Us_Info():
     Edwin = medium_font.render("Edwin Chen", True, (204, 0, 0))
     win.blit(Edwin, (300, 500))
     back_button.draw_button()
-    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1250, 600, 120, 50))
+    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
-    win.blit(Back, (1260, 600))
+    win.blit(Back, (1690, 850))
     
 # Arcs which will be used for the timer. 
 def drawArcCv2(surf, color, center, radius, width, end_angle):
@@ -393,6 +396,9 @@ def draw_start():
     news_font = nav_font.render("News", True, (0, 255, 0))
     services_font = nav_font.render("Services", True, (0, 255, 0))
     contact_us_font = nav_font.render("Contact Us", True, (0, 255, 0))
+    create_account_font = small_font.render("Create Account", True, (0,0,0))
+    login_font = small_font.render("Login", True, (0,0,0))
+    scoreboard_font = font.render("SCOREBOARD", True, (0,0,0))
     start_button.draw_special_button(0,-100)
     quit_button.draw_button()
     scoreboard_button.draw_button()
@@ -408,42 +414,62 @@ def draw_start():
     win.blit(news_font, (550, 30))
     win.blit(services_font, (750, 30))
     win.blit(contact_us_font, (980, 30))
+    win.blit(create_account_font, (1340, 33))
+    win.blit(login_font, (1640, 33))
+    win.blit(scoreboard_font, (245, 750))
 
 def draw_create_account(): 
     win.fill((0,0,0))
+    create_account_font = font.render("ACCOUNT CREATION PAGE", True, (255,255,255))
     username_font = font.render("Username", True, (255,255,255))
     password_font = font.render("Password", True, (255,255,255))
     username_font_2 = font.render(username_text, True, (255,255,255))
     password_font_2 = font.render(password_text, True, (255,255,255))
+    submit_font = font.render("SUBMIT", True, (0,0,0))
     win.blit(username_font, (246, 200))
     username_text_field.draw_text_field() 
     password_text_field.draw_text_field() 
     win.blit(password_font, (246, 380))
     win.blit(username_font_2, (254, 260))
-    win.blit(password_font_2, (254, 435))
+    win.blit(password_font_2, (254, 440))
+    win.blit(create_account_font, (640, 20))
     submit_button.draw_button()
+    win.blit(submit_font, (600, 592))
     if username_input_active == True: 
             pygame.draw.circle(win, (0,255,0), (452,224), 15)
     if password_input_active == True: 
             pygame.draw.circle(win, (0,255,0), (452, 400), 15)
+    back_button.draw_button()
+    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
+    Back = font.render("Back", True, (255, 255, 255))
+    win.blit(Back, (1690, 850))
 
 def draw_login_account(): 
     win.fill((0,0,0))
+    login_account_font = font.render("LOGIN PAGE", True, (255,255,255))
     username_font = font.render("Username", True, (255,255,255))
     password_font = font.render("Password", True, (255,255,255))
     username_font_2 = font.render(login_username_text,  True, (255,255,255))
-    password_font_2 = font.render(login_password_text,  True, (255,255,255))
+    password_font_2 = font.render(asterik_password_login,  True, (255,255,255))
+    submit_font = font.render("SUBMIT", True, (0,0,0))
     login_username_text_field.draw_text_field() 
     login_password_text_field.draw_text_field() 
     win.blit(username_font, (246, 200))
     win.blit(password_font, (254, 380))
     win.blit(username_font_2, (254, 260))
-    win.blit(password_font_2, (254, 435))
+    win.blit(password_font_2, (254, 440)) 
+    win.blit(login_account_font, (640, 20))
+    win.blit(submit_font, (600, 592))
+
     login_submit_button.draw_button() 
     if login_username_input_active == True: 
             pygame.draw.circle(win, (0,255,0), (452,224), 15)
     if login_password_input_active == True: 
             pygame.draw.circle(win, (0,255,0), (452, 400), 15)
+    back_button.draw_button()
+    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
+    Back = font.render("Back", True, (255, 255, 255))
+    win.blit(Back, (1690, 850))
 
 def draw_scoreboard(): 
     win.fill((0,0,0))
@@ -480,6 +506,10 @@ def draw_scoreboard():
     win.blit(triangle_accuracy, (200, 500))
     win.blit(octagon_accuracy, (200, 600))
     win.blit(cube_accuracy, (200, 700))
+    back_button.draw_button()
+    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
+    Back = font.render("Back", True, (255, 255, 255))
+    win.blit(Back, (1690, 850))
 
 def draw_intermediate(): 
     win.fill((220,220,220))
@@ -496,9 +526,9 @@ def draw_intermediate():
     shape_game_button.draw_button()
     pygame.draw.rect(win, (0,0,0), (600, 0, 5, 450), 0)
     back_button.draw_button()
-    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1250, 600, 120, 50))
+    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
-    win.blit(Back, (1260, 600))
+    win.blit(Back, (1690, 850))
 
 def draw_intermediate_shape(): 
     if intermediate_shape_game_screen == True: 
@@ -545,9 +575,9 @@ def draw_shape_game():
     shape_game_okay_button.draw_button()
     win.blit(shape_okay_button_font, (871, 815))
     back_button.draw_button()
-    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1250, 600, 120, 50))
+    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
-    win.blit(Back, (1260, 600))
+    win.blit(Back, (1690, 850))
 
 # Draw all necessary components for the mathematics game. 
 def draw_math_game(): 
@@ -607,12 +637,12 @@ def draw_math_game():
         drawArcCv2(win, (0, 122, 0), (1625, 520), 90, 20, 360*first_game_counter/60)
     game_one_restart_button.draw_button()
     game_one_save_button.draw_button()
-    win.blit(restart_font, (1566, 809))
+    win.blit(restart_font, (1566, 778))
     win.blit(font.render("Save", True, (0,0,0)), (1566, 709))
     back_button.draw_button()
-    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1250, 600, 120, 50))
+    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
-    win.blit(Back, (1260, 600))
+    win.blit(Back, (1690, 850))
 
 username_counter = 0 
 password_counter = 0
@@ -647,8 +677,10 @@ while run:
             if password_input_active == True: 
                 if event.key == pygame.K_BACKSPACE:
                     password_text = password_text[:-1]
+                    asterik_password_creation = asterik_password_creation[:-1]
                 else: 
                     password_text += event.unicode  
+                    asterik_password_creation += "*"
         if event.type == pygame.KEYDOWN and login_page == True: 
             if login_username_input_active == True:  
                 if event.key == pygame.K_BACKSPACE: 
@@ -658,8 +690,10 @@ while run:
             if login_password_input_active == True: 
                 if event.key == pygame.K_BACKSPACE:
                     login_password_text = login_password_text[:-1]
+                    asterik_password_login = asterik_password_login[:-1]
                 else: 
                     login_password_text += event.unicode  
+                    asterik_password_login += "*"
             
         if event.type == pygame.MOUSEBUTTONDOWN:
             if home_button.check_mouse_position(mouse_position) and start_game == True:
@@ -688,34 +722,37 @@ while run:
                 contact_us_page = True
             
             if back_button.check_mouse_position(mouse_position) and home_info_page == True:
-                fade()
                 home_info_page = False
                 start_game = True
     
             if back_button.check_mouse_position(mouse_position) and about_us_page == True:
-                fade()
                 about_us_page = False
                 start_game = True
                 
             if back_button.check_mouse_position(mouse_position) and news_info_page == True:
-                fade()
                 news_info_page = False
                 start_game = True
                 
             if back_button.check_mouse_position(mouse_position) and services_page == True:
-                fade()
                 services_page = False
                 start_game = True
                 
             if back_button.check_mouse_position(mouse_position) and contact_us_page == True:
-                fade()
                 contact_us_page = False
                 start_game = True
                 
             if back_button.check_mouse_position(mouse_position) and intermediate_screen == True:
-                fade()
                 intermediate_screen = False
                 start_game = True
+            if back_button.check_mouse_position(mouse_position) and login_page == True: 
+                login_page = False 
+                start_game = True 
+            if back_button.check_mouse_position(mouse_position) and create_account_page == True: 
+                create_account_page = False 
+                start_game = True 
+            if back_button.check_mouse_position(mouse_position) and scoreboard_page == True: 
+                scoreboard_page = False 
+                start_game = True 
             if start_button.check_mouse_position(mouse_position) and start_game == True: 
                 fade()
                 start_game = False
@@ -725,7 +762,7 @@ while run:
                 fade()
                 shape_game = False
                 mixer.music.pause()
-                intermediate_screen = True
+                intermediate_screen = True  
             if game == True and back_button.check_mouse_position(mouse_position):
                 fade()
                 game = False
@@ -734,12 +771,15 @@ while run:
                 fade()
                 pygame.quit() 
             if scoreboard_button.check_mouse_position(mouse_position) and start_game == True: 
+                fade() 
                 start_game = False 
                 scoreboard_page = True 
             if create_account_button.check_mouse_position(mouse_position) and start_game == True: 
+                fade()
                 create_account_page = True 
                 start_game = False 
             if login_button.check_mouse_position(mouse_position) and start_game == True: 
+                fade()
                 start_game = False 
                 login_page = True 
             if username_text_field.click_text_field(mouse_position) and create_account_page == True: 
@@ -974,7 +1014,7 @@ while run:
                 square_boolean = False 
                 octagon_boolean = False 
                 intermediate_shape_time = 5 
-        #print(mouse_position)  # Prints mouse position in console, useful for trying to place objects. 
+        print(mouse_position)  # Prints mouse position in console, useful for trying to place objects. 
         if event.type == pygame.QUIT:
             run = False
     if start_game == True:  
@@ -1016,9 +1056,11 @@ while run:
         calculator_list_2 = []
         win.fill((230,230,230))
         restart_Shape_game_font = shape_game_font.render("Restart", True, (255,255,255))
+        save_shape_game_font = shape_game_font.render("Save", True, (255,255,255))
         restart_shape_game_button.draw_button()
         save_shape_game_button.draw_button() 
         win.blit(restart_Shape_game_font, (69, 778))
+        win.blit(save_shape_game_font, (68, 588))
         for item in shape_game_number_list: 
             item_2 = (item.x, item.y)
             calculator_list.append(item_2)
