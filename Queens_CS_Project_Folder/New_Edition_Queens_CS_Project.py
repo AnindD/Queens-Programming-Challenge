@@ -56,8 +56,13 @@ class Button():
     def draw_button(self):
         pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height), self.border)
     
-    def draw_special_button(self,x,y):
-        win.blit(special_button, (x,y))
+    def draw_start_menu_button(self,x,y):
+        win.blit(start_menu_button, (x,y))
+    
+    def draw_score_button (Self,x,y):
+        win.blit(score_button, (x,y))
+        #didn't have a good way to do it so...
+
     # Checks whether or not the position of your mouse cursor is inside the recantangular button and then presses accordingly. 
     def check_mouse_position(self, pos): 
         if pos[0] > self.x and pos[0] < self.x + self.width: 
@@ -117,8 +122,10 @@ PROJECT_ROOT = Path(__file__).parent.parent
 
 not_equal_sign = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/NotEqualSign.png")
 not_equal_sign = pygame.transform.scale(not_equal_sign, (250, 250))
-special_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/tryitbutton.png")
-special_button = pygame.transform.scale(special_button, (600, 600))
+start_menu_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/start_menu_button.png")
+start_menu_button = pygame.transform.scale(start_menu_button, (1040, 720))
+score_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/start_menu_button.png")
+score_button = pygame.transform.scale(start_menu_button, (1040, 510))
 
 
 sound_symbol = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Speaker_Icon.svg")
@@ -399,16 +406,16 @@ def draw_start():
     create_account_font = small_font.render("Create Account", True, (0,0,0))
     login_font = small_font.render("Login", True, (0,0,0))
     scoreboard_font = font.render("SCOREBOARD", True, (0,0,0))
-    start_button.draw_special_button(0,-100)
-    quit_button.draw_button()
-    scoreboard_button.draw_button()
+    start_button.draw_start_menu_button(-170,-160)
+    quit_button.draw_start_menu_button(-170,140)
+    scoreboard_button.draw_score_button(-170,520)
     create_account_button.draw_button()
     login_button.draw_button()
     for buttons in nav_bar_buttons: 
         buttons.draw_button() 
     win.blit(logo, (850,250))
-    win.blit(start_font, (250,170)) 
-    win.blit(quit_font, (250, 470))
+    win.blit(start_font, (285,170)) 
+    win.blit(quit_font, (285, 470))
     win.blit(home_font, (110, 30))
     win.blit(about_us_font, (310, 30))
     win.blit(news_font, (550, 30))
