@@ -9,7 +9,7 @@ import numpy
 import math 
 from pathlib import Path
 from pygame import mixer
-import mysql.connector
+#import mysql.connector
 
 
 # initialize the necessary variables 
@@ -19,19 +19,19 @@ pygame.display.set_caption("Queens University Project") # Title
 clock = pygame.time.Clock() # The clock (will be useful later) 
 run = True 
 
-
+"""
 # Database 
 database = mysql.connector.connect(
     host="localhost", 
     user="root", 
-    password="Ukusabmw123#",
+    password="ROOT",
     database="testdatabase"
 )
 mycursor = database.cursor() 
 mycursor.execute("SELECT * FROM Users")
 for x in mycursor: 
     print(x)
-
+"""
 
 # Fade animation, triggers after each button press. 
 def fade(): 
