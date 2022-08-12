@@ -24,7 +24,7 @@ run = True
 database = mysql.connector.connect(
     host="localhost", 
     user="root", 
-    password="ROOT",
+    password="Ukusabmw123#",
     database="testdatabase"
 )
 mycursor = database.cursor() 
@@ -122,6 +122,7 @@ class Marble():
         self.y = y
         self.color = color
     def draw_marble(self): 
+        pygame.draw.circle(win, (0,0,0), (self.x, self.y), 20, 5)
         pygame.draw.circle(win, self.color, (self.x, self.y), 15, 0)
 
 # Images 
