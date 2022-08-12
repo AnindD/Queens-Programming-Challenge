@@ -9,7 +9,7 @@ import numpy
 import math 
 from pathlib import Path
 from pygame import mixer
-#import mysql.connector
+import mysql.connector
 
 
 # initialize the necessary variables 
@@ -19,19 +19,19 @@ pygame.display.set_caption("Queens University Project") # Title
 clock = pygame.time.Clock() # The clock (will be useful later) 
 run = True 
 
-"""
+
 # Database 
 database = mysql.connector.connect(
     host="localhost", 
     user="root", 
-    password="ROOT",
+    password="Ukusabmw123#",
     database="testdatabase"
 )
 mycursor = database.cursor() 
 mycursor.execute("SELECT * FROM Users")
 for x in mycursor: 
     print(x)
-"""
+
 
 # Fade animation, triggers after each button press. 
 def fade(): 
@@ -129,28 +129,28 @@ class Marble():
 PROJECT_ROOT = Path(__file__).parent.parent
 
 
-not_equal_sign = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/NotEqualSign.png")
+not_equal_sign = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSymbols/NotEqualSign.png")
 not_equal_sign = pygame.transform.scale(not_equal_sign, (250, 250))
-start_menu_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/start_menu_button.png")
+start_menu_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSymbols/start_menu_button.png")
 start_menu_button = pygame.transform.scale(start_menu_button, (1040, 720))
 score_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/start_menu_button.png")
 score_button = pygame.transform.scale(start_menu_button, (1040, 510))
 
 
-sound_symbol = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Speaker_Icon.svg")
+sound_symbol = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSymbols/Speaker_Icon.svg")
 sound_symbol = pygame.transform.scale(sound_symbol, (30, 30))
-no_sound_symbol = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/speaker-slash.webp")
+no_sound_symbol = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSymbols/speaker-slash.webp")
 no_sound_symbol = pygame.transform.scale(no_sound_symbol, (30, 30))
 
-create_account_background = pygame.image.load(PROJECT_ROOT /"Queens_CS_Project_Folder/Create_Account_Background.png") 
-login_background = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Login_Background.png")
-number_game_background = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Number_Game_Background.png")
-number_game_background_2 = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Number_Game_Background_2.png")
+create_account_background = pygame.image.load(PROJECT_ROOT /"Queens_CS_Project_Folder/Background/Create_Account_Background.png") 
+login_background = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Background/Login_Background.png")
+number_game_background = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Background/Number_Game_Background.png")
+number_game_background_2 = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Background/Number_Game_Background_2.png")
 logo = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Propel_logo.jpg")
-counter_starter_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Counter_Starter_Button.png")
+counter_starter_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSymbols/Counter_Starter_Button.png")
 
-intermediate_screen_1 = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/intermediate_screen_1.png")
-intermediate_screen_2 = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/intermediate_screen_2.png")
+intermediate_screen_1 = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Background/intermediate_screen_1.png")
+intermediate_screen_2 = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Background/intermediate_screen_2.png")
 
 
 Square_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Square.png")
@@ -955,7 +955,7 @@ while run:
 
 
             if game == True:
-                mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/BWV_989_Variation_no1.mp3")
+                mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Audio/BWV_989_Variation_no1.mp3")
                 mixer.music.set_volume(1)
                 mixer.music.play(-1)
                 if music_button.check_mouse_position(mouse_position):
@@ -966,7 +966,7 @@ while run:
                         mixer.music.play(loops = -1)
 
             if shape_game == True:
-                mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Goldberg_Variations_BWV_988_-_Aria.mp3")
+                mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Audio/Goldberg_Variations_BWV_988_-_Aria.mp3")
                 mixer.music.set_volume(1)
                 mixer.music.play(-1)
                 if music_button.check_mouse_position(mouse_position) and shape_game == True:
