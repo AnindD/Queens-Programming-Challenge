@@ -133,7 +133,7 @@ not_equal_sign = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Misc
 not_equal_sign = pygame.transform.scale(not_equal_sign, (250, 250))
 start_menu_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSymbols/start_menu_button.png")
 start_menu_button = pygame.transform.scale(start_menu_button, (1040, 720))
-score_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/start_menu_button.png")
+score_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSymbols/start_menu_button.png")
 score_button = pygame.transform.scale(start_menu_button, (1040, 510))
 
 
