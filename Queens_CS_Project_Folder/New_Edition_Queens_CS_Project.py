@@ -3,6 +3,7 @@
 # Date: July, 26thm, 2022
 # Version: N/A 
 import pygame 
+import random 
 import cv2 
 import numpy 
 import math 
@@ -20,16 +21,16 @@ run = True
 
 
 # Database 
-"""database = mysql.connector.connect(
+database = mysql.connector.connect(
     host="localhost", 
     user="root", 
-    password="Root",
+    password="Ukusabmw123#",
     database="testdatabase"
 )
 mycursor = database.cursor() 
 mycursor.execute("SELECT * FROM Users")
 for x in mycursor: 
-    print(x)"""
+    print(x)
 
 
 # Fade animation, triggers after each button press. 
@@ -115,6 +116,14 @@ class Circle_Number_Point():
     def draw_point(self): 
         pygame.draw.circle(win, (255,0,0), (self.x, self.y), 30, 3)
 
+class Marble(): 
+    def __init__(self, color, x, y): 
+        self.x = x 
+        self.y = y
+        self.color = color
+    def draw_marble(self): 
+        pygame.draw.circle(win, self.color, (self.x, self.y), 15, 0)
+
 # Images 
 PROJECT_ROOT = Path(__file__).parent.parent
 
@@ -180,6 +189,13 @@ back_button = Button((255, 0, 0), 1680, 850, 120, 50, 2)
 
 math_game_button = Button((0,0,0), 0, 450, 600, 450, 4)
 shape_game_button = Button((0,0,0), 600.5, 450, 600, 450, 4)
+third_game_button = Button((0,0,0), 1200, 450, 480, 450, 4)
+
+left_side_marble_button = Button((0,0,0), 226, 446, 500, 300, 4)
+right_side_marble_button = Button((0,0,0,), 756, 446, 500, 300, 4)
+
+submit_counting_game = Button((0,0,0), 670, 314, 150, 50, 0)
+reset_counting_game = Button((0,0,0), 670, 785, 150, 50, 0)
 
 game_one_okay_button = Button((255,0,0), 546, 538, 163, 62, 0)
 game_one_restart_button = Button((255,255,255), 1505, 700, 300, 62, 0)
@@ -213,6 +229,7 @@ shape_select = False
 start_game = True
 game = False 
 shape_game = False 
+counting_game = False 
 shape_game_menu = False 
 shape_game_itself = False 
 intermediate_screen = False 
@@ -244,6 +261,17 @@ shape_mouse_counter = 0
 # Extra Details 
 text = "a"
 counter = 0 
+
+
+# Counting Game Header 
+first_number = 0
+second_number = 0
+answer = 0
+counting_game_response = ""
+counting_game_type_active = False 
+counting_game_score = 0 
+left_side_marble = []
+right_side_marble = [] 
 
 # Account Creation 
 username_text = ""
@@ -295,11 +323,15 @@ def Home_Info():
     
 def About_Us_Info():
     win.fill((255, 204, 153))
-    ThreeofUs = font.render("We are a team of three young scientists: Anindit, Jaelyn, and Edwin.", True, (153, 0, 76))
+    ThreeofUs = font.render("We are a team of three young programmers: Anindit, Jaelyn, and Edwin.", True, (153, 0, 76))
     win.blit(ThreeofUs, (130, 50))
     WeEnjoy = font.render("We enjoy finding innovative solutions to real-world issues.", True, (153, 0, 76))
     win.blit(WeEnjoy, (180, 110))
+    our_goal = font.render("In order to tackle this problem we created Propel, a pygame application which will ", True,  (153, 0,76))
+    our_goal_2 = font.render("fulfill the needs of those who struggle with mathematics", True, (153, 0, 76))
     back_button.draw_button()
+    win.blit(our_goal, (130, 200))
+    win.blit(our_goal_2, (130, 250))
     pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
     win.blit(Back, (1690, 850))
@@ -526,16 +558,20 @@ def draw_intermediate():
 
     math_game = font.render("MATH GAME", True, (0,0,0))
     shape_game = font.render("SHAPE GAME", True, (0,0,0))
+    third_game = font.render("THIRD GAME", True, (0,0,0))
 
 
     win.blit(intermediate_screen_1, (0,0))
     win.blit(intermediate_screen_2, (600, 0))
     win.blit(math_game, (199, 603))
     win.blit(shape_game, (810, 603))
+    win.blit(third_game, (1330, 603))
     math_game_button.draw_button()
     shape_game_button.draw_button()
+    third_game_button.draw_button()
     pygame.draw.rect(win, (0,0,0), (600, 0, 5, 450), 0)
     pygame.draw.rect(win, (0,0,0), (1195, 0, 5, 450))
+    pygame.draw.rect(win, (0,0,0), (1675, 0, 5, 450))
     back_button.draw_button()
     pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
@@ -590,6 +626,28 @@ def draw_shape_game():
     Back = font.render("Back", True, (255, 255, 255))
     win.blit(Back, (1690, 850))
 
+def draw_counting_game(): 
+    win.fill((230,230,230))
+    win.blit(font.render(f"How many is {str(first_number)} added with {str(second_number)}", True, (0,0,0)), (466, 127))
+    pygame.draw.rect(win, (0,0,0), (651,229,200,45), 2)
+    win.blit(small_font.render(counting_game_response, True, (0,0,0)), (655,237))
+    submit_counting_game.draw_button()
+    win.blit(small_font.render("Submit", True, (255,255,255)), (699, 326))
+    win.blit(medium_font.render(str(counting_game_score), True, (0,0,0)), (1700, 20))
+    left_side_marble_button.draw_button()
+    right_side_marble_button.draw_button()
+    hint = len(left_side_marble) + len(right_side_marble) 
+    win.blit(font.render(str(hint), True, (246,190,0)), (1430, 580)) 
+    for elements in right_side_marble: 
+        elements.draw_marble() 
+    for elements in left_side_marble: 
+        elements.draw_marble() 
+    reset_counting_game.draw_button()
+    win.blit(small_font.render("Reset", True, (255,255,255)), (699, 795))
+
+
+
+
 # Draw all necessary components for the mathematics game. 
 def draw_math_game(): 
     global game_end 
@@ -622,7 +680,7 @@ def draw_math_game():
         win.blit(instructions_font, (75,801))
     if len(number_point_list) > 0:
         win.blit(counter_font, (255,355))
-        win.blit(secondary_counter_font, (46, 801))
+        win.blit(secondary_counter_font, (1582, 32))
     elif len(number_point_list) == 0: 
         win.blit(congrats_font, (255,355))
         game_end = True 
@@ -705,6 +763,14 @@ while run:
                 else: 
                     login_password_text += event.unicode  
                     asterik_password_login += "*"
+        if event.type == pygame.KEYDOWN and counting_game == True: 
+            if counting_game_type_active == True: 
+                if event.key == pygame.K_BACKSPACE: 
+                    counting_game_response = counting_game_response[:-1]
+                else:  
+                    if event.unicode.isdigit() and len(counting_game_response) < 4: 
+                        counting_game_response += event.unicode 
+
             
         if event.type == pygame.MOUSEBUTTONDOWN:
             if home_button.check_mouse_position(mouse_position) and start_game == True:
@@ -877,6 +943,15 @@ while run:
             if intermediate_screen == True and shape_game_button.check_mouse_position(mouse_position):
                 intermediate_screen = False
                 shape_game = True 
+            
+            if intermediate_screen == True and third_game_button.check_mouse_position(mouse_position):
+                intermediate_screen = False
+                counting_game = True 
+                counting_game_type_active = True
+                first_number = random.randint(0,9)
+                second_number = random.randint(0,9)
+                answer = first_number + second_number 
+
 
             if game == True:
                 mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/BWV_989_Variation_no1.mp3")
@@ -1025,6 +1100,27 @@ while run:
                 square_boolean = False 
                 octagon_boolean = False 
                 intermediate_shape_time = 5 
+            if counting_game == True and submit_counting_game.check_mouse_position(mouse_position): 
+                if int(counting_game_response) == answer: 
+                    counting_game_score += 1 
+                    print("Correct Answer")
+                    counting_game_response = ""
+                    first_number = random.randint(0,9)
+                    second_number = random.randint(0,9)
+                    answer = first_number + second_number
+                else: 
+                    print("Incorrect Answer")
+            if counting_game == True and left_side_marble_button.check_mouse_position(mouse_position): 
+                left_side_marble.append(Marble((255,0,0), mouse_position[0], mouse_position[1]))
+            if counting_game == True and right_side_marble_button.check_mouse_position(mouse_position): 
+                right_side_marble.append(Marble((0,0,255), mouse_position[0], mouse_position[1]))
+            if counting_game == True and reset_counting_game.check_mouse_position(mouse_position):
+                left_side_marble = []
+                right_side_marble = []
+
+            
+            
+
         print(mouse_position)  # Prints mouse position in console, useful for trying to place objects. 
         if event.type == pygame.QUIT:
             run = False
@@ -1123,6 +1219,8 @@ while run:
             win.blit(shape_game_font.render(f"Accuracy for point 8: {str(int(calculator_list_2[7]))}%", True, (0,0,0)), (785, 800))
     if game == True:
         draw_math_game()
+    if counting_game == True: 
+        draw_counting_game() 
  
         #for number_points in number_point_list:
             #number_points.draw_point()  
