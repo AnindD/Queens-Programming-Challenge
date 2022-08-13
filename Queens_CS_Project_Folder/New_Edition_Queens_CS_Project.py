@@ -9,7 +9,7 @@ import numpy
 import math 
 from pathlib import Path
 from pygame import mixer
-#import mysql.connector
+import mysql.connector
 
 
 # initialize the necessary variables 
@@ -19,19 +19,19 @@ pygame.display.set_caption("Queens University Project") # Title
 clock = pygame.time.Clock() # The clock (will be useful later) 
 run = True 
 
-"""
+
 # Database 
 database = mysql.connector.connect(
     host="localhost", 
     user="root", 
-    password="ROOT",
+    password="Ukusabmw123#",
     database="testdatabase"
 )
 mycursor = database.cursor() 
 mycursor.execute("SELECT * FROM Users")
 for x in mycursor: 
     print(x)
-"""
+
 
 # Fade animation, triggers after each button press. 
 def fade(): 
@@ -196,7 +196,8 @@ left_side_marble_button = Button((0,0,0), 226, 446, 500, 300, 4)
 right_side_marble_button = Button((0,0,0,), 756, 446, 500, 300, 4)
 
 submit_counting_game = Button((0,0,0), 670, 314, 150, 50, 0)
-reset_counting_game = Button((0,0,0), 670, 785, 150, 50, 0)
+reset_counting_game = Button((0,0,0), 372, 785, 150, 50, 0)
+reset_counting_game_2 = Button((0,0,0), 935, 785, 150, 50, 0)
 
 game_one_okay_button = Button((255,0,0), 546, 538, 163, 62, 0)
 game_one_restart_button = Button((255,255,255), 1505, 700, 300, 62, 0)
@@ -206,6 +207,7 @@ shape_game_okay_button = Button((255,255,255), 837, 815, 163, 62, 0)
 finish_shape_drawing_button = Button((0,0,0), 55, 121, 125, 100, 0)
 restart_shape_game_button = Button((0,0,0), 55,750, 150, 100, 0)
 save_shape_game_button = Button((0,0,0), 55, 550, 150, 100, 0)
+save_counting_game_button = Button((0,220,0), 1650, 110, 150, 50, 0)
 
 username_text_field = Text_Field((255,255,255), 246, 263)
 password_text_field = Text_Field((255,255,255), 246, 443)
@@ -522,6 +524,8 @@ def draw_scoreboard():
     triangle_accuracy = font.render("Triangle Highest Accuracy: ", True, (255,255,255))
     octagon_accuracy =  font.render("Octagon Highest Accuracy: ", True, (255,255,255))
     cube_accuracy = font.render("Cube Highest Accuracy: ", True, (255,255,255))
+    counting_game_font = font.render("Addition Game Score: ", True, (255,255,255))
+    print(score_list)
     if len(score_list) > 0: 
         try: 
             win.blit(font.render(f"{str(score_list[0])} Seconds", True, (255,255,255)), (1400, 300))
@@ -543,12 +547,17 @@ def draw_scoreboard():
             win.blit(font.render(f"{str(score_list[4])}%", True, (255,255,255)), (1400, 700))
         except: 
             pass 
+        try: 
+            win.blit(font.render(f"{str(score_list[5])}", True, (255,255,255)), (1400, 800))
+        except: 
+            pass
     win.blit(scoreboard_font, (300, 100))
     win.blit(fastest_time, (200, 300))
     win.blit(square_accuracy, (200, 400))
     win.blit(triangle_accuracy, (200, 500))
     win.blit(octagon_accuracy, (200, 600))
     win.blit(cube_accuracy, (200, 700))
+    win.blit(counting_game_font, (200, 800))
     back_button.draw_button()
     pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
@@ -644,7 +653,16 @@ def draw_counting_game():
     for elements in left_side_marble: 
         elements.draw_marble() 
     reset_counting_game.draw_button()
-    win.blit(small_font.render("Reset", True, (255,255,255)), (699, 795))
+    reset_counting_game_2.draw_button()
+    save_counting_game_button.draw_button()
+    win.blit(small_font.render("Reset Left", True, (255,255,255)), (383, 795))
+    win.blit(small_font.render("Reset Right", True, (255,255,255)), (948, 795))
+    win.blit(font.render("SAVE", True, (255,255,255)), (1665, 110))
+    back_button.draw_button()
+    pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
+    Back = font.render("Back", True, (255, 255, 255))
+    win.blit(Back, (1690, 850))
+
 
 
 
@@ -800,8 +818,13 @@ while run:
                 contact_us_page = True
             
             if back_button.check_mouse_position(mouse_position) and home_info_page == True:
+                fade() 
                 home_info_page = False
                 start_game = True
+            if back_button.check_mouse_position(mouse_position) and counting_game == True: 
+                fade() 
+                counting_game = False 
+                intermediate_screen = True 
     
             if back_button.check_mouse_position(mouse_position) and about_us_page == True:
                 about_us_page = False
@@ -923,7 +946,7 @@ while run:
                     if username_password_dictionary[login_username_text] == login_password_text:
                         print("Successfully logged in") 
                         logged_in_username = login_username_text
-                        mycursor.execute("SELECT ScoreGameOne, ScoreGameTwo, ScoreGameThree, ScoreGameFour, ScoreGameFive FROM Users WHERE name = %s",(logged_in_username,))
+                        mycursor.execute("SELECT ScoreGameOne, ScoreGameTwo, ScoreGameThree, ScoreGameFour, ScoreGameFive, ScoreGameSix FROM Users WHERE name = %s",(logged_in_username,))
                         score_list = list(mycursor.fetchall()[0]) 
                         login_page = False 
                         start_game = True 
@@ -1117,8 +1140,11 @@ while run:
                 right_side_marble.append(Marble((0,0,255), mouse_position[0], mouse_position[1]))
             if counting_game == True and reset_counting_game.check_mouse_position(mouse_position):
                 left_side_marble = []
+            if counting_game == True and reset_counting_game_2.check_mouse_position(mouse_position):
                 right_side_marble = []
-
+            if counting_game == True and save_counting_game_button.check_mouse_position(mouse_position): 
+                mycursor.execute("UPDATE Users SET ScoreGameSix = %s WHERE name = %s", (counting_game_score, logged_in_username))
+                database.commit()
             
             
 
