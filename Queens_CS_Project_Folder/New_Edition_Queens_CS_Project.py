@@ -1,4 +1,3 @@
-
 # Authors: Edwin Chen, Anindit Dewan, Jaelyn Wan 
 # Date: July, 26thm, 2022
 # Version: N/A 
@@ -22,7 +21,7 @@ run = True
 database = mysql.connector.connect(
     host="localhost", 
     user="root", 
-    password="Ukusabmw123#",
+    password="ROOT",
     database="testdatabase"
 )
 mycursor = database.cursor() 
@@ -139,7 +138,6 @@ sound_symbol = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSy
 sound_symbol = pygame.transform.scale(sound_symbol, (30, 30))
 no_sound_symbol = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSymbols/speaker-slash.webp")
 no_sound_symbol = pygame.transform.scale(no_sound_symbol, (30, 30))
-addition_game = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSymbols/Addition.png")
 
 create_account_background = pygame.image.load(PROJECT_ROOT /"Queens_CS_Project_Folder/Background/Create_Account_Background.png") 
 login_background = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Background/Login_Background.png")
@@ -150,6 +148,7 @@ counter_starter_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Fol
 
 intermediate_screen_1 = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Background/intermediate_screen_1.png")
 intermediate_screen_2 = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Background/intermediate_screen_2.png")
+intermediate_screen_3 = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Background/intermediate_screen_3.png")
 
 
 Square_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Square.png")
@@ -216,8 +215,9 @@ login_username_text_field = Text_Field((255,255,255), 246, 263)
 login_password_text_field = Text_Field((255,255,255), 246, 443)
 login_submit_button = Button((255,255,255), 529, 591, 300, 50, 0)
 
-math_music_clicked = True
-shape_music_clicked = True
+math_music_clicked = False
+shape_music_clicked = False
+thirdgame_music_clicked = False 
 
 # Shape Game Buttons 
 square = Button((255,0,0), 0, 0, 211, 225, 1)
@@ -566,7 +566,7 @@ def draw_intermediate():
 
     win.blit(intermediate_screen_1, (0,0))
     win.blit(intermediate_screen_2, (600, 0))
-    win.blit(addition_game, (1200, 0))
+    win.blit(intermediate_screen_3, (1200, 0))
     win.blit(math_game, (199, 603))
     win.blit(shape_game, (810, 603))
     win.blit(third_game, (1330, 603))
@@ -632,6 +632,13 @@ def draw_shape_game():
 
 def draw_counting_game(): 
     win.fill((230,230,230))
+    music_button.draw_button()
+    if thirdgame_music_clicked == True:
+        pygame.draw.rect(win, (0, 153, 0), pygame.Rect(1400, 30, 40, 40))
+        win.blit(sound_symbol, (1405, 35))
+    else:
+        pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1400, 30, 40, 40))
+        win.blit(no_sound_symbol, (1405, 35))
     win.blit(font.render(f"How many is {str(first_number)} added with {str(second_number)}", True, (0,0,0)), (466, 127))
     pygame.draw.rect(win, (0,0,0), (651,229,200,45), 2)
     win.blit(small_font.render(counting_game_response, True, (0,0,0)), (655,237))
@@ -656,6 +663,7 @@ def draw_counting_game():
     pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
     win.blit(Back, (1690, 850))
+ 
 
 
 
@@ -862,6 +870,14 @@ while run:
                 fade()
                 game = False
                 intermediate_screen = True
+                math_music_clicked = False
+                intermediate_screen = True
+                first_timer_boolean = False
+                threshold_counter = 0
+                changing_number_threshold = 1
+                first_game_counter = 60
+                start_first_game = True
+                counter_starter_button_boolean = True
             if quit_button.check_mouse_position(mouse_position) and start_game == True:
                 fade()
                 pygame.quit() 
@@ -971,23 +987,31 @@ while run:
                 answer = first_number + second_number 
 
 
-            if game == True:
-                mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Audio/BWV_989_Variation_no1.mp3")
-                mixer.music.set_volume(1)
-                mixer.music.play(-1)
-                if music_button.check_mouse_position(mouse_position):
-                    math_music_clicked = not math_music_clicked
-                    if not math_music_clicked:
-                        mixer.music.pause()
-                    else:
-                        mixer.music.play(loops = -1)
-
-            if shape_game == True:
-                mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Audio/Goldberg_Variations_BWV_988_-_Aria.mp3")
-                mixer.music.set_volume(1)
-                mixer.music.play(-1)
-                if music_button.check_mouse_position(mouse_position) and shape_game == True:
-                    shape_music_clicked = not shape_music_clicked
+            if game == True and music_button.check_mouse_position(mouse_position):
+                math_music_clicked = not math_music_clicked
+                if not math_music_clicked:
+                    mixer.music.pause()
+                else:
+                    mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Audio/BWV_989_Variation_no1.mp3")
+                    mixer.music.play()
+                            
+            # if shape game is on:
+            if shape_game == True and music_button.check_mouse_position(mouse_position):
+                shape_music_clicked = not shape_music_clicked
+                if not shape_music_clicked:
+                    mixer.music.pause()
+                else:
+                    mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Audio/Goldberg_Variations_BWV_988_-_Aria.mp3")
+                    mixer.music.play()
+                    
+            # if counting game is on:
+            if counting_game == True and music_button.check_mouse_position(mouse_position):
+                thirdgame_music_clicked = not thirdgame_music_clicked
+                if not thirdgame_music_clicked:
+                    mixer.music.pause()
+                else:
+                    mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Audio/Concerto-no.-21-in-C-major-K.-467-II.-Andante.mp3")
+                    mixer.music.play()
                     
                     
 
@@ -1249,4 +1273,3 @@ while run:
     pygame.display.update()
 
 pygame.quit()
- 
