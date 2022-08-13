@@ -4,8 +4,6 @@
 # Version: N/A 
 import pygame 
 import random 
-import cv2 
-import numpy 
 import math 
 from pathlib import Path
 from pygame import mixer
@@ -24,7 +22,7 @@ run = True
 database = mysql.connector.connect(
     host="localhost", 
     user="root", 
-    password="ROOT",
+    password="Ukusabmw123#",
     database="testdatabase"
 )
 mycursor = database.cursor() 
@@ -141,6 +139,7 @@ sound_symbol = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSy
 sound_symbol = pygame.transform.scale(sound_symbol, (30, 30))
 no_sound_symbol = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSymbols/speaker-slash.webp")
 no_sound_symbol = pygame.transform.scale(no_sound_symbol, (30, 30))
+addition_game = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSymbols/Addition.png")
 
 create_account_background = pygame.image.load(PROJECT_ROOT /"Queens_CS_Project_Folder/Background/Create_Account_Background.png") 
 login_background = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Background/Login_Background.png")
@@ -382,17 +381,11 @@ def Contact_Us_Info():
     win.blit(Back, (1690, 850))
     
 # Arcs which will be used for the timer. 
-def drawArcCv2(surf, color, center, radius, width, end_angle):
-    circle_image = numpy.zeros((radius*2+4, radius*2+4, 4), dtype = numpy.uint8)
-    circle_image = cv2.ellipse(circle_image, (radius+2, radius+2),
-        (radius-width//2, radius-width//2), 0, 0, end_angle, (*color, 255), width, lineType=cv2.LINE_AA) 
-    circle_surface = pygame.image.frombuffer(circle_image.flatten(), (radius*2+4, radius*2+4), 'RGBA')
-    surf.blit(circle_surface, circle_surface.get_rect(center = center))
 
-def drawArc(surf, color, center, radius, width, end_angle):
-    arc_rect = pygame.Rect(0, 0, radius*2, radius*2)
-    arc_rect.center = center
-    pygame.draw.arc(surf, color, arc_rect, 0, end_angle, width)
+def Draw_Timer_Circle(win, color, center_position, radius, angle_completion, width):
+    rectangular_arc = pygame.Rect(0, 0, radius*2, radius*2)
+    rectangular_arc.center = center_position
+    pygame.draw.arc(win, color, rectangular_arc, 0, angle_completion, width)
 
 # List of all the points that will be clicked on. 
 number_point_list = [
@@ -568,11 +561,12 @@ def draw_intermediate():
 
     math_game = font.render("MATH GAME", True, (0,0,0))
     shape_game = font.render("SHAPE GAME", True, (0,0,0))
-    third_game = font.render("THIRD GAME", True, (0,0,0))
+    third_game = font.render("OPERATION GAME", True, (0,0,0))
 
 
     win.blit(intermediate_screen_1, (0,0))
     win.blit(intermediate_screen_2, (600, 0))
+    win.blit(addition_game, (1200, 0))
     win.blit(math_game, (199, 603))
     win.blit(shape_game, (810, 603))
     win.blit(third_game, (1330, 603))
@@ -722,7 +716,7 @@ def draw_math_game():
     pygame.draw.circle(win, (255,255,255), (1620,517), 77)
     win.blit(first_game_counter_text, (1600, 495))
     if first_game_counter != 0: 
-        drawArcCv2(win, (0, 122, 0), (1625, 520), 90, 20, 360*first_game_counter/60)
+        Draw_Timer_Circle(win, (0, 122, 0), (1625, 520), 90, 6.28318531*first_game_counter/60, 20)
     game_one_restart_button.draw_button()
     game_one_save_button.draw_button()
     win.blit(restart_font, (1566, 778))
