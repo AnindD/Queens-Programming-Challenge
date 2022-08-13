@@ -204,7 +204,8 @@ shape_game_okay_button = Button((255,255,255), 837, 815, 163, 62, 0)
 
 finish_shape_drawing_button = Button((0,0,0), 55, 121, 125, 100, 0)
 restart_shape_game_button = Button((0,0,0), 55,750, 150, 100, 0)
-save_shape_game_button = Button((0,0,0), 55, 550, 150, 100, 0)
+save_shape_game_button = Button((0,0,0), 55, 350, 150, 100, 0)
+gamescreen_shape_game_button = Button((0,0,0), 55, 550, 150, 100, 0)
 save_counting_game_button = Button((0,220,0), 1650, 110, 150, 50, 0)
 
 username_text_field = Text_Field((255,255,255), 246, 263)
@@ -1152,6 +1153,17 @@ while run:
                     answer = first_number + second_number
                 else: 
                     print("Incorrect Answer")
+            if calculations_screen == True and gamescreen_shape_game_button.check_mouse_position(mouse_position): 
+                calculations_screen = False
+                shape_game_number_list = []
+                calculator_list = []
+                calculator_list_2 = []
+                intermediate_screen = True 
+                cube_boolean = False
+                triangle_boolean = False 
+                square_boolean = False 
+                octagon_boolean = False 
+                intermediate_shape_time = 5 
             if counting_game == True and left_side_marble_button.check_mouse_position(mouse_position): 
                 left_side_marble.append(Marble((255,0,0), mouse_position[0], mouse_position[1]))
             if counting_game == True and right_side_marble_button.check_mouse_position(mouse_position): 
@@ -1207,12 +1219,15 @@ while run:
     if calculations_screen == True: 
         calculator_list_2 = []
         win.fill((230,230,230))
-        restart_Shape_game_font = shape_game_font.render("Restart", True, (255,255,255))
+        mainmenu_Shape_game_font = shape_game_font.render("Main Menu", True, (255,255,255))
+        gamescreen_shape_game_font = shape_game_font.render("Game Screen", True, (255,255,255))
         save_shape_game_font = shape_game_font.render("Save", True, (255,255,255))
         restart_shape_game_button.draw_button()
         save_shape_game_button.draw_button() 
-        win.blit(restart_Shape_game_font, (69, 778))
-        win.blit(save_shape_game_font, (68, 588))
+        gamescreen_shape_game_button.draw_button()
+        win.blit(mainmenu_Shape_game_font, (69, 788))
+        win.blit(gamescreen_shape_game_font, (68, 588))
+        win.blit(save_shape_game_font, (68, 388))
         for item in shape_game_number_list: 
             item_2 = (item.x, item.y)
             calculator_list.append(item_2)
