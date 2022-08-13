@@ -879,6 +879,18 @@ while run:
                 first_game_counter = 60
                 start_first_game = True
                 counter_starter_button_boolean = True
+                number_point_list = [
+                    Number_Point(60, 133), 
+                    Number_Point(283, 132), Number_Point(368,242), 
+                    Number_Point(566, 131), Number_Point(608, 184), Number_Point(566, 240),
+                    Number_Point(845, 131), Number_Point(845, 213), Number_Point(927, 131), Number_Point(927, 213),
+                    Number_Point(1208, 132), Number_Point(1125,132), Number_Point(1124, 184), Number_Point(1206, 185), Number_Point(1124,240),
+                    Number_Point(303, 497), Number_Point(303,497), Number_Point(227, 552), Number_Point(227, 552), Number_Point(309, 604), Number_Point(309,604), 
+                    Number_Point(467, 499), Number_Point(552, 498), Number_Point(552, 498), Number_Point(552, 566), Number_Point(552, 566), Number_Point(552, 613), Number_Point(552, 613),
+                    Number_Point(750, 528),  Number_Point(750, 528), Number_Point(831, 528), Number_Point(831, 528), Number_Point(750, 609), Number_Point(750, 609), Number_Point(832,608),  Number_Point(832,608),
+                    Number_Point(1029, 497), Number_Point(1029, 497), Number_Point(1109, 497), Number_Point(1109, 497), Number_Point(1029, 551), Number_Point(1029, 551), Number_Point(1109, 551), Number_Point(1109, 551), Number_Point(1030,606)
+                ]
+                
             if quit_button.check_mouse_position(mouse_position) and start_game == True:
                 fade()
                 pygame.quit() 
