@@ -1,12 +1,12 @@
 # Authors: Edwin Chen, Anindit Dewan, Jaelyn Wan 
 # Date: July, 26thm, 2022
-# Version: N/A 
+# Version: Final 
+from pathlib import Path
+from pygame import mixer
 import pygame 
 import random 
 import math 
-from pathlib import Path
-from pygame import mixer
-#import mysql.connector
+import mysql.connector
 
 
 # initialize the necessary variables 
@@ -16,7 +16,7 @@ pygame.display.set_caption("Queens University Project") # Title
 clock = pygame.time.Clock() # The clock (will be useful later) 
 run = True 
 
-"""
+
 # Database 
 database = mysql.connector.connect(
     host="localhost", 
@@ -28,19 +28,10 @@ mycursor = database.cursor()
 mycursor.execute("SELECT * FROM Users")
 for x in mycursor: 
     print(x)
-"""
 
-# Fade animation, triggers after each button press. 
-def fade(): 
-    fade_animation = pygame.Surface((1800, 900))
-    fade_animation.fill((0,0,0))
-    for alpha in range(0, 75): 
-        fade_animation.set_alpha(alpha)
-        win.blit(fade_animation, (0,0))
-        pygame.display.update()
-        pygame.time.delay(5) 
-
-# Button Class, creates all of the buttons. 
+ 
+# Classes 
+ 
 class Button(): 
     def __init__(self, color, x, y, width, height, border): 
         self.color = color
@@ -71,6 +62,7 @@ class Button():
             return True 
         else: 
             return False 
+
 class Text_Field(): 
     def __init__(self, color, x, y): 
         self.x = x 
@@ -86,9 +78,6 @@ class Text_Field():
         else: 
             return False 
          
-
-
-# Points used in game. 
 class Number_Point(): 
     def __init__(self, x, y): 
         self.x = x 
@@ -122,9 +111,8 @@ class Marble():
         pygame.draw.circle(win, (0,0,0), (self.x, self.y), 20, 5)
         pygame.draw.circle(win, self.color, (self.x, self.y), 15, 0)
 
-# Images 
+# Alll Media 
 PROJECT_ROOT = Path(__file__).parent.parent
-
 
 not_equal_sign = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSymbols/NotEqualSign.png")
 not_equal_sign = pygame.transform.scale(not_equal_sign, (250, 250))
@@ -132,8 +120,6 @@ start_menu_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/M
 start_menu_button = pygame.transform.scale(start_menu_button, (1040, 720))
 score_button = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSymbols/start_menu_button.png")
 score_button = pygame.transform.scale(start_menu_button, (1040, 510))
-
-
 sound_symbol = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSymbols/Speaker_Icon.svg")
 sound_symbol = pygame.transform.scale(sound_symbol, (30, 30))
 no_sound_symbol = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/MiscSymbols/speaker-slash.webp")
@@ -156,8 +142,6 @@ Triangle_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shap
 Cube_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Cube.png")
 Octagon_Image = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Octagon.png")
 Shape_Collage = pygame.image.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Shape_Game/Shape_Selection_Collage.png")
-
-
 
 # Fonts 
 number_game_font = pygame.font.Font(PROJECT_ROOT / "Queens_CS_Project_Folder/Fonts/kremlin.ttf", 400)
@@ -193,20 +177,21 @@ third_game_button = Button((0,0,0), 1200, 450, 480, 450, 4)
 left_side_marble_button = Button((0,0,0), 226, 446, 500, 300, 4)
 right_side_marble_button = Button((0,0,0,), 756, 446, 500, 300, 4)
 
-submit_counting_game = Button((0,0,0), 670, 314, 150, 50, 0)
 reset_counting_game = Button((0,0,0), 372, 785, 150, 50, 0)
 reset_counting_game_2 = Button((0,0,0), 935, 785, 150, 50, 0)
+game_one_restart_button = Button((255,255,255), 1505, 700, 300, 62, 0)
+restart_shape_game_button = Button((0,0,0), 55,750, 150, 100, 0)
 
 game_one_okay_button = Button((255,0,0), 546, 538, 163, 62, 0)
-game_one_restart_button = Button((255,255,255), 1505, 700, 300, 62, 0)
-game_one_save_button = Button((255,255,255), 1505, 770, 300, 62, 0)
+submit_counting_game = Button((0,0,0), 670, 314, 150, 50, 0)
 shape_game_okay_button = Button((255,255,255), 837, 815, 163, 62, 0)
-
 finish_shape_drawing_button = Button((0,0,0), 55, 121, 125, 100, 0)
-restart_shape_game_button = Button((0,0,0), 55,750, 150, 100, 0)
-save_shape_game_button = Button((0,0,0), 55, 350, 150, 100, 0)
 gamescreen_shape_game_button = Button((0,0,0), 55, 550, 150, 100, 0)
+
+game_one_save_button = Button((255,255,255), 1505, 770, 300, 62, 0)
+save_shape_game_button = Button((0,0,0), 55, 350, 150, 100, 0)
 save_counting_game_button = Button((0,220,0), 1650, 110, 150, 50, 0)
+
 
 username_text_field = Text_Field((255,255,255), 246, 263)
 password_text_field = Text_Field((255,255,255), 246, 443)
@@ -216,9 +201,6 @@ login_username_text_field = Text_Field((255,255,255), 246, 263)
 login_password_text_field = Text_Field((255,255,255), 246, 443)
 login_submit_button = Button((255,255,255), 529, 591, 300, 50, 0)
 
-math_music_clicked = False
-shape_music_clicked = False
-thirdgame_music_clicked = False 
 
 # Shape Game Buttons 
 square = Button((255,0,0), 0, 0, 211, 225, 1)
@@ -248,7 +230,11 @@ services_page = False
 contact_us_page = False
 game_end = False 
 
-# Shape game booleans 
+math_music_clicked = False
+shape_music_clicked = False
+thirdgame_music_clicked = False 
+
+# Shape game booleans/variables 
 square_boolean = False 
 triangle_boolean = False 
 cube_boolean = False 
@@ -266,7 +252,7 @@ text = "a"
 counter = 0 
 
 
-# Counting Game Header 
+# Counting Game Variables  
 first_number = 0
 second_number = 0
 answer = 0
@@ -290,7 +276,7 @@ asterik_password_creation = ""
 asterik_password_login = ""
 score_list = [] 
 
-# Thresholds, for the first see line 252 
+# Thresholds, for game #1 
 changing_number_threshold = 1
 threshold_counter = 0 
 
@@ -299,10 +285,93 @@ first_game_counter = 60
 first_timer_boolean = False 
 timer_event = pygame.USEREVENT+1
 pygame.time.set_timer(timer_event, 1000)
-
 intermediate_shape_time = 5
 shape_timer_boolean = False 
+    
+# Arcs which will be used for the timer. 
 
+def Draw_Timer_Circle(win, color, center_position, radius, angle_completion, width):
+    rectangular_arc = pygame.Rect(0, 0, radius*2, radius*2)
+    rectangular_arc.center = center_position
+    pygame.draw.arc(win, color, rectangular_arc, 0, angle_completion, width)
+
+# List of all the points that will be clicked on. 
+number_point_list = [
+    Number_Point(60, 133), 
+    Number_Point(283, 132), Number_Point(368,242), 
+    Number_Point(566, 131), Number_Point(608, 184), Number_Point(566, 240),
+    Number_Point(845, 131), Number_Point(845, 213), Number_Point(927, 131), Number_Point(927, 213),
+    Number_Point(1208, 132), Number_Point(1125,132), Number_Point(1124, 184), Number_Point(1206, 185), Number_Point(1124,240),
+    Number_Point(303, 497), Number_Point(303,497), Number_Point(227, 552), Number_Point(227, 552), Number_Point(309, 604), Number_Point(309,604), 
+    Number_Point(467, 499), Number_Point(552, 498), Number_Point(552, 498), Number_Point(552, 566), Number_Point(552, 566), Number_Point(552, 613), Number_Point(552, 613),
+    Number_Point(750, 528),  Number_Point(750, 528), Number_Point(831, 528), Number_Point(831, 528), Number_Point(750, 609), Number_Point(750, 609), Number_Point(832,608),  Number_Point(832,608),
+    Number_Point(1029, 497), Number_Point(1029, 497), Number_Point(1109, 497), Number_Point(1109, 497), Number_Point(1029, 551), Number_Point(1029, 551), Number_Point(1109, 551), Number_Point(1109, 551), Number_Point(1030,606)
+    ]
+
+# Circle points, for double clicks. 
+second_number_points = [
+    Circle_Number_Point(317, 509), Circle_Number_Point(240, 565), Circle_Number_Point(322, 620), 
+    Circle_Number_Point(565, 513), Circle_Number_Point(567, 577), Circle_Number_Point(566, 625), 
+    Circle_Number_Point(764, 540), Circle_Number_Point(845, 541), Circle_Number_Point(763, 626), Circle_Number_Point(848, 621), 
+    Circle_Number_Point(1044, 510), Circle_Number_Point(1124, 510), Circle_Number_Point(1043, 566), Circle_Number_Point(1124, 561), 
+]
+constant_len_list = len(number_point_list)
+
+number_list = [1,2,3,4,5,6,7,8,9,10]
+
+shape_game_number_list = []
+
+def draw_shapes():
+    if octagon_boolean == True: 
+        win.blit(Octagon_Image, (678,131))
+    if triangle_boolean == True: 
+        win.blit(Triangle_Image, (702, 197))
+    if cube_boolean == True: 
+        win.blit(Cube_Image, (612, 81))
+    if square_boolean == True: 
+        win.blit(Square_Image, (696, 141)) 
+
+
+# Draw all the necessary components for the start menu. 
+def draw_start():
+    win.fill((255,255,255))
+    start_font = font.render("START", True, (0,0,0))
+    quit_font = font.render("QUIT", True, (0,0,0))
+    home_font = nav_font.render("Home", True, (0, 0, 0))
+    about_us_font = nav_font.render("About Us", True, (0, 0, 0))
+    news_font = nav_font.render("News", True, (0, 0, 0))
+    services_font = nav_font.render("Services", True, (0, 0, 0))
+    contact_us_font = nav_font.render("Contact Us", True, (0, 0, 0))
+    create_account_font = small_font.render("Create Account", True, (0,0,0))
+    login_font = small_font.render("Login", True, (0,0,0))
+    scoreboard_font = font.render("SCOREBOARD", True, (0,0,0))
+    start_button.draw_start_menu_button(-170,-160)
+    quit_button.draw_start_menu_button(-170,140)
+    scoreboard_button.draw_score_button(-170,520)
+    create_account_button.draw_button()
+    login_button.draw_button()
+    for buttons in nav_bar_buttons: 
+        buttons.draw_button() 
+    win.blit(logo, (850,250))
+    win.blit(start_font, (285,170)) 
+    win.blit(quit_font, (285, 470))
+    win.blit(home_font, (110, 30))
+    win.blit(about_us_font, (310, 30))
+    win.blit(news_font, (550, 30))
+    win.blit(services_font, (750, 30))
+    win.blit(contact_us_font, (980, 30))
+    win.blit(create_account_font, (1340, 33))
+    win.blit(login_font, (1640, 33))
+    win.blit(scoreboard_font, (245, 750))
+
+def fade(): 
+    fade_animation = pygame.Surface((1800, 900))
+    fade_animation.fill((0,0,0))
+    for alpha in range(0, 75): 
+        fade_animation.set_alpha(alpha)
+        win.blit(fade_animation, (0,0))
+        pygame.display.update()
+        pygame.time.delay(5) 
 
 def Home_Info():
     win.fill((255, 204, 204))
@@ -380,81 +449,6 @@ def Contact_Us_Info():
     pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
     win.blit(Back, (1690, 850))
-    
-# Arcs which will be used for the timer. 
-
-def Draw_Timer_Circle(win, color, center_position, radius, angle_completion, width):
-    rectangular_arc = pygame.Rect(0, 0, radius*2, radius*2)
-    rectangular_arc.center = center_position
-    pygame.draw.arc(win, color, rectangular_arc, 0, angle_completion, width)
-
-# List of all the points that will be clicked on. 
-number_point_list = [
-    Number_Point(60, 133), 
-    Number_Point(283, 132), Number_Point(368,242), 
-    Number_Point(566, 131), Number_Point(608, 184), Number_Point(566, 240),
-    Number_Point(845, 131), Number_Point(845, 213), Number_Point(927, 131), Number_Point(927, 213),
-    Number_Point(1208, 132), Number_Point(1125,132), Number_Point(1124, 184), Number_Point(1206, 185), Number_Point(1124,240),
-    Number_Point(303, 497), Number_Point(303,497), Number_Point(227, 552), Number_Point(227, 552), Number_Point(309, 604), Number_Point(309,604), 
-    Number_Point(467, 499), Number_Point(552, 498), Number_Point(552, 498), Number_Point(552, 566), Number_Point(552, 566), Number_Point(552, 613), Number_Point(552, 613),
-    Number_Point(750, 528),  Number_Point(750, 528), Number_Point(831, 528), Number_Point(831, 528), Number_Point(750, 609), Number_Point(750, 609), Number_Point(832,608),  Number_Point(832,608),
-    Number_Point(1029, 497), Number_Point(1029, 497), Number_Point(1109, 497), Number_Point(1109, 497), Number_Point(1029, 551), Number_Point(1029, 551), Number_Point(1109, 551), Number_Point(1109, 551), Number_Point(1030,606)
-    ]
-
-# Circle points, for double clicks. 
-second_number_points = [
-    Circle_Number_Point(317, 509), Circle_Number_Point(240, 565), Circle_Number_Point(322, 620), 
-    Circle_Number_Point(565, 513), Circle_Number_Point(567, 577), Circle_Number_Point(566, 625), 
-    Circle_Number_Point(764, 540), Circle_Number_Point(845, 541), Circle_Number_Point(763, 626), Circle_Number_Point(848, 621), 
-    Circle_Number_Point(1044, 510), Circle_Number_Point(1124, 510), Circle_Number_Point(1043, 566), Circle_Number_Point(1124, 561), 
-]
-constant_len_list = len(number_point_list)
-
-number_list = [1,2,3,4,5,6,7,8,9,10]
-
-shape_game_number_list = []
-def draw_shapes():
-    if octagon_boolean == True: 
-        win.blit(Octagon_Image, (678,131))
-    if triangle_boolean == True: 
-        win.blit(Triangle_Image, (702, 197))
-    if cube_boolean == True: 
-        win.blit(Cube_Image, (612, 81))
-    if square_boolean == True: 
-        win.blit(Square_Image, (696, 141)) 
-
-# Draw all the necessary components for the start menu. 
-def draw_start():
-    win.fill((255,255,255))
-    start_font = font.render("START", True, (0,0,0))
-    quit_font = font.render("QUIT", True, (0,0,0))
-    home_font = nav_font.render("Home", True, (0, 0, 0))
-    about_us_font = nav_font.render("About Us", True, (0, 0, 0))
-    news_font = nav_font.render("News", True, (0, 0, 0))
-    services_font = nav_font.render("Services", True, (0, 0, 0))
-    contact_us_font = nav_font.render("Contact Us", True, (0, 0, 0))
-    create_account_font = small_font.render("Create Account", True, (0,0,0))
-    login_font = small_font.render("Login", True, (0,0,0))
-    scoreboard_font = font.render("SCOREBOARD", True, (0,0,0))
-    start_button.draw_start_menu_button(-170,-160)
-    quit_button.draw_start_menu_button(-170,140)
-    scoreboard_button.draw_score_button(-170,520)
-    create_account_button.draw_button()
-    login_button.draw_button()
-    for buttons in nav_bar_buttons: 
-        buttons.draw_button() 
-    win.blit(logo, (850,250))
-    win.blit(start_font, (285,170)) 
-    win.blit(quit_font, (285, 470))
-    win.blit(home_font, (110, 30))
-    win.blit(about_us_font, (310, 30))
-    win.blit(news_font, (550, 30))
-    win.blit(services_font, (750, 30))
-    win.blit(contact_us_font, (980, 30))
-    win.blit(create_account_font, (1340, 33))
-    win.blit(login_font, (1640, 33))
-    win.blit(scoreboard_font, (245, 750))
-
 def draw_create_account(): 
     win.fill((0,0,0))
     win.blit(create_account_background, (0,0))
@@ -665,10 +659,6 @@ def draw_counting_game():
     Back = font.render("Back", True, (255, 255, 255))
     win.blit(Back, (1690, 850))
  
-
-
-
-
 
 # Draw all necessary components for the mathematics game. 
 def draw_math_game(): 
@@ -936,7 +926,6 @@ while run:
                     print("Password not adaqueate enough")
                 elif len(username_text) > 25: 
                     print("Username not adequate")
-                # DATABASE - [DO NOT TOUCH]
                 else: 
                     print(username_text)
                     print(password_text)
@@ -944,7 +933,6 @@ while run:
                     database.commit()
                     username_text = ""
                     password_text = ""
-            # DATABASE - [DO NOT TOUCH]
             if login_submit_button.check_mouse_position(mouse_position) and login_page == True: 
                 username_found = False 
                 mycursor.execute("SELECT name FROM Users")
@@ -1127,7 +1115,6 @@ while run:
                 for x in calculator_list_2: 
                     average += x 
                 average = (average/len(calculator_list_2))  
-                # DATABASE - [DO NOT TOUCH]
                 try:                   
                     if square_boolean == True: 
                         mycursor.execute("UPDATE Users SET ScoreGameTwo = %s WHERE name = %s", (average, logged_in_username))
