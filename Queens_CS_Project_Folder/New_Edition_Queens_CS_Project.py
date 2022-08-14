@@ -1003,7 +1003,7 @@ while run:
                 if not shape_music_clicked:
                     mixer.music.pause()
                 else:
-                    mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Audio/Goldberg_Variations_BWV_988_-_Aria.mp3")
+                    mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Audio/Alla-Turca.mp3")
                     mixer.music.play()
                     
             # if counting game is on:
@@ -1012,7 +1012,7 @@ while run:
                 if not thirdgame_music_clicked:
                     mixer.music.pause()
                 else:
-                    mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Audio/Concerto-no.-21-in-C-major-K.-467-II.-Andante.mp3")
+                    mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Audio/Bach_WV_989_Variation_no1.mp3")
                     mixer.music.play()
                     
                     
