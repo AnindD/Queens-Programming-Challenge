@@ -852,12 +852,21 @@ while run:
                 start_game = False
                 intermediate_screen = True   
                 print("Start Button Clicked")
+                
+            if counting_game == True and back_button.check_mouse_position(mouse_position):
+                mixer.music.pause() 
+                fade() 
+                counting_game = False 
+                intermediate_screen = True
+                thirdgame_music_clicked = False
             if shape_game == True and back_button.check_mouse_position(mouse_position):
+                mixer.music.pause()
                 fade()
                 shape_game = False
-                mixer.music.pause()
-                intermediate_screen = True  
+                intermediate_screen = True 
+                shape_music_clicked = False
             if game == True and back_button.check_mouse_position(mouse_position):
+                mixer.music.pause()
                 fade()
                 game = False
                 intermediate_screen = True
@@ -867,7 +876,7 @@ while run:
                 threshold_counter = 0
                 changing_number_threshold = 1
                 first_game_counter = 60
-                start_first_game = False
+                start_first_game = True
                 counter_starter_button_boolean = True
                 number_point_list = [
                     Number_Point(60, 133), 
@@ -974,7 +983,8 @@ while run:
                 
             if intermediate_screen == True and math_game_button.check_mouse_position(mouse_position):
                 intermediate_screen = False 
-                game = True 
+                game = True
+                game_end = False
 
             if intermediate_screen == True and shape_game_button.check_mouse_position(mouse_position):
                 intermediate_screen = False
@@ -994,7 +1004,7 @@ while run:
                 if not math_music_clicked:
                     mixer.music.pause()
                 else:
-                    mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Audio/BWV_989_Variation_no1.mp3")
+                    mixer.music.load(PROJECT_ROOT / "Queens_CS_Project_Folder/Audio/Goldberg_Variations_BWV_988_-_Aria.mp3.mp3")
                     mixer.music.play()
                             
             # if shape game is on:
@@ -1038,7 +1048,9 @@ while run:
                 threshold_counter = 0 
                 changing_number_threshold = 1
                 first_game_counter = 60 
-                start_first_game = True 
+                start_first_game = True
+                game_end = False
+                
             if game == True and game_one_save_button.check_mouse_position(mouse_position): 
                 print("SAVED!")
                 if logged_in_username == "": 
@@ -1134,10 +1146,12 @@ while run:
 
             if calculations_screen == True and restart_shape_game_button.check_mouse_position(mouse_position): 
                 calculations_screen = False
+                mixer.music.pause()
                 shape_game_number_list = []
                 calculator_list = []
                 calculator_list_2 = []
-                start_game = True 
+                start_game = True
+                shape_music_clicked = False
                 cube_boolean = False
                 triangle_boolean = False 
                 square_boolean = False 
@@ -1155,10 +1169,12 @@ while run:
                     print("Incorrect Answer")
             if calculations_screen == True and gamescreen_shape_game_button.check_mouse_position(mouse_position): 
                 calculations_screen = False
+                mixer.music.pause()
                 shape_game_number_list = []
                 calculator_list = []
                 calculator_list_2 = []
-                intermediate_screen = True 
+                intermediate_screen = True
+                shape_music_clicked = False
                 cube_boolean = False
                 triangle_boolean = False 
                 square_boolean = False 
