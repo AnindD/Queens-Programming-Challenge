@@ -718,8 +718,8 @@ def draw_math_game():
         Draw_Timer_Circle(win, (0, 122, 0), (1625, 520), 90, 6.28318531*first_game_counter/60, 20)
     game_one_restart_button.draw_button()
     game_one_save_button.draw_button()
-    win.blit(restart_font, (1566, 778))
-    win.blit(font.render("Save", True, (0,0,0)), (1566, 709))
+    win.blit(restart_font, (1566, 709))
+    win.blit(font.render("Save", True, (0,0,0)), (1566, 778))
     back_button.draw_button()
     pygame.draw.rect(win, (255, 0, 0), pygame.Rect(1680, 850, 120, 50))
     Back = font.render("Back", True, (255, 255, 255))
@@ -867,7 +867,7 @@ while run:
                 threshold_counter = 0
                 changing_number_threshold = 1
                 first_game_counter = 60
-                start_first_game = True
+                start_first_game = False
                 counter_starter_button_boolean = True
                 number_point_list = [
                     Number_Point(60, 133), 
@@ -880,6 +880,7 @@ while run:
                     Number_Point(750, 528),  Number_Point(750, 528), Number_Point(831, 528), Number_Point(831, 528), Number_Point(750, 609), Number_Point(750, 609), Number_Point(832,608),  Number_Point(832,608),
                     Number_Point(1029, 497), Number_Point(1029, 497), Number_Point(1109, 497), Number_Point(1109, 497), Number_Point(1029, 551), Number_Point(1029, 551), Number_Point(1109, 551), Number_Point(1109, 551), Number_Point(1030,606)
                 ]
+                game_end = False 
                 
             if quit_button.check_mouse_position(mouse_position) and start_game == True:
                 fade()
@@ -1280,9 +1281,7 @@ while run:
         draw_math_game()
     if counting_game == True: 
         draw_counting_game() 
- 
-        #for number_points in number_point_list:
-            #number_points.draw_point()  
+
 
     pygame.display.update()
 
