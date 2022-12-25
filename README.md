@@ -1,6 +1,6 @@
 # Propel 
 Authors: Anindit Dewan, Jaelyn Wan and Edwin Chen 
-<br>Won Second Place in the Queens Summer Computing Challenge 2022.
+<br>Won Second Place in the Queens University Summer Computing Challenge 2022.
 <br>For further proof, consult our [DevPost link](https://devpost.com/software/propel-r52yae). 
 
 # Description 
